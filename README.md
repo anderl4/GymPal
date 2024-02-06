@@ -1,7 +1,7 @@
 
 # GymPal: Your Fitness Companion
 
-Blah Blah Blah Blah Blah
+CompSci 125 Group 5
 
 ## Prerequisites
 
