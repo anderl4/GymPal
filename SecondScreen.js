@@ -2,12 +2,16 @@ import React from 'react';
 import { View, Text, StyleSheet, TouchableOpacity, Image, ImageBackground } from 'react-native';
 
 const days = ['Mon', 'Tue', 'Wed', 'Thu', 'Fri'];
+const daysNum = [25, 26, 27, 28, 29]
 
 export default function SecondScreen() {
   return (
     <View style={styles.container}>
       <View style={styles.header}>
-        <Text style={styles.helloAnakin}>Hello, Anakin</Text>
+        <View style={{flex: 1, justifyContent: 'center'}}>
+          <Text style={styles.helloAnakin}>Hello, Anakin</Text>
+          <Text style={styles.helloAnakinSubtitle}>What did you workout today?</Text>
+        </View>
         <TouchableOpacity style={styles.settingsIcon}>
           <Image source={require('./assets/setting.png')} style={styles.settingsIcon} />
         </TouchableOpacity>
@@ -25,9 +29,11 @@ export default function SecondScreen() {
       <Text style={styles.fitnessActivitiesTitle}>My Fitness Activities</Text>
       <View style={{ flexDirection: 'row', marginLeft: 10, marginRight: 10, marginTop: 20, flexWrap: 'wrap' }}>
         {days.map((day, index) => (
-          <View key={index} style={styles.dayRectangle}>
-            <Text style={styles.dayText}>{day}</Text>
-            <View style={styles.circle}></View>
+          <View key={index} style={ [styles.dayRectangle, index === 0 && styles.dayRectangleSelected ]}>
+            <Text style={[styles.dayText, index === 0 && styles.dayTextSelected]}>{day}</Text>
+            <View style={styles.circle}>
+              <Text style={[styles.dayTextNum, index === 0 && styles.dayTextNumSelected]}>{daysNum[index]}</Text>
+            </View>
           </View>
         ))}
       </View>
@@ -57,22 +63,38 @@ const styles = StyleSheet.create({
     fontSize: 25,
     fontWeight: '600',
   },
+  helloAnakinSubtitle: {
+    color: '#70747E',
+    fontFamily: 'Poppins',
+    fontSize: 14,
+    fontWeight: '400',
+  },
   settingsIcon: {
     width: 24,
     height: 24,
+    marginTop: -6,
   },
   rectangle: {
-    width: 340,
-    height: 155,
+    width: 380,
+    height: 145,
     backgroundColor: '#7FCDFE',
     justifyContent: 'center',
     paddingHorizontal: 20,
     borderRadius: 30,
     position: 'relative',
+
+    // shadow
+    shadowColor: "#501f72",
+    shadowOffset: {
+      width: 9,
+      height: 18,
+    },
+    shadowOpacity: 0.2,
+    shadowRadius: 13,
   },
   rectangleText: {
     color: '#191919',
-    fontFamily: 'Lato',
+    fontFamily: 'Lato-Bold',
     fontSize: 20,
     fontWeight: '700',
     marginRight: 140,
@@ -80,15 +102,15 @@ const styles = StyleSheet.create({
   startButton: {
     justifyContent: 'center',
     alignItems: 'center',
-    width: 100,
-    height: 50,
-    marginTop: 5,
+    width: 103.83,
+    height: 30.79,
+    marginTop: 15,
   },
   startButtonText: {
     color: '#FFF',
-    fontFamily: 'Poppins-Bold',
+    fontFamily: 'Poppins',
     fontSize: 11,
-    fontWeight: '600',
+    lineHeight: 16.5,
     paddingRight: 45,
   },
   weightliftingMan: {
@@ -108,10 +130,8 @@ const styles = StyleSheet.create({
   
   rectangleText: {
     color: '#191919',
-    fontFamily: 'Lato',
+    fontFamily: 'Lato-Bold',
     fontSize: 20,
-    fontWeight: '700',
-    lineHeight: 30,
     width: '60%',
   },
   
@@ -119,14 +139,14 @@ const styles = StyleSheet.create({
     width: 269,
     height: 29,
     color: '#060302',
-    fontFamily: 'DM Sans',
-    fontSize: 24,
-    fontWeight: '700',
+    fontFamily: 'Poppins',
+    fontSize: 20,
+    fontWeight: '600',
     lineHeight: 30,
     alignSelf: 'flex-start',
     marginLeft: 20, 
-    marginTop: 20,
-    marginBottom: -10,
+    marginTop: 75,
+    marginBottom: 10,
   },
   
   dayRectangleContainer: {
@@ -137,20 +157,51 @@ const styles = StyleSheet.create({
   },
   dayRectangle: {
     flexGrow: 1,
+    width: 55.45,
     height: 88.806,
     backgroundColor: 'rgba(105, 105, 105, 0.10)',
     justifyContent: 'center',
     alignItems: 'center',
     marginHorizontal: 5,
-    borderRadius: 5,
+    borderRadius: 10,
+  },
+
+  dayRectangleSelected: {
+    flexGrow: 1,
+    width: 55.45,
+    height: 88.806,
+    backgroundColor: '#2F80ED',
+    justifyContent: 'center',
+    alignItems: 'center',
+    marginHorizontal: 5,
+    borderRadius: 10,
   },
   
   dayText: {
     fontFamily: 'Montserrat-Regular',
     fontSize: 14,
   },
+
+  dayTextSelected: {
+    fontFamily: 'Montserrat-Regular',
+    fontSize: 14,
+    color: '#fff'
+  },
+
+  dayTextNum: {
+    fontFamily: 'Montserrat-Bold',
+    fontSize: 14,
+  },
+
+  dayTextNumSelected: {
+    fontFamily: 'Montserrat-Bold',
+    fontSize: 14,
+    color: '#2F80ED',
+  },
   
   circle: {
+    justifyContent: 'center',
+    alignItems: 'center',
     width: 26.27,
     height: 26.27,
     borderRadius: 26.27 / 2, 

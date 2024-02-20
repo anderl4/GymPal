@@ -49,6 +49,7 @@ const styles = StyleSheet.create({
     width: 430,
     height: 290,
     marginTop: 90,
+    zIndex: 1,
   },
   lowerSection: {
     width: '100%', 
@@ -56,6 +57,7 @@ const styles = StyleSheet.create({
     backgroundColor: '#79B3E1',
     alignItems: 'center', 
     paddingTop: 20,
+    marginTop: -127.5,
   },
   getStartedButton: {
     width: 301,
@@ -63,6 +65,7 @@ const styles = StyleSheet.create({
     backgroundColor: '#FF715B',
     justifyContent: 'center',
     alignItems: 'center',
+    marginTop: 220,
     marginBottom: 20,
     borderRadius: 28,
   },
@@ -70,6 +73,5 @@ const styles = StyleSheet.create({
     color: '#000',
     fontFamily: 'Montserrat-Bold',
     fontSize: 16,
-    fontWeight: '700',
   },
 });

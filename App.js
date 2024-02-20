@@ -10,10 +10,12 @@ const Stack = createNativeStackNavigator();
 
 async function loadFonts() {
   await Font.loadAsync({
-    'Montserrat': require('./assets/fonts/Montserrat-Regular.ttf'),
+    'Montserrat-Regular': require('./assets/fonts/Montserrat-Regular.ttf'),
     'Montserrat-Bold': require('./assets/fonts/Montserrat-Bold.ttf'),
+    'Montserrat-SemiBold': require('./assets/fonts/Montserrat-SemiBold.ttf'),
     'Poppins': require('./assets/fonts/Poppins-Regular.ttf'),
     'Poppins-Bold': require('./assets/fonts/Poppins-Bold.ttf'),
+    'Lato-Bold': require('./assets/fonts/Lato-Bold.ttf'),
   });
 }
 
