@@ -1,10 +1,12 @@
 import React from 'react';
 import { View, Text, StyleSheet, TouchableOpacity, Image, ImageBackground } from 'react-native';
+import { useNavigation } from '@react-navigation/native';
 
 const days = ['Mon', 'Tue', 'Wed', 'Thu', 'Fri'];
 const daysNum = [25, 26, 27, 28, 29]
 
 export default function SecondScreen() {
+    const navigation = useNavigation();
   return (
     <View style={styles.container}>
       <View style={styles.header}>
@@ -12,15 +14,17 @@ export default function SecondScreen() {
           <Text style={styles.helloAnakin}>Hello, Anakin</Text>
           <Text style={styles.helloAnakinSubtitle}>What did you workout today?</Text>
         </View>
-        <TouchableOpacity style={styles.settingsIcon}>
+        <TouchableOpacity style={styles.settingsIcon} onPress={() => navigation.navigate('Settings')}>
           <Image source={require('./assets/setting.png')} style={styles.settingsIcon} />
         </TouchableOpacity>
       </View>
       <View style={styles.rectangle}>
         <Text style={styles.rectangleText}>Create your fitness plan today!</Text>
-        <ImageBackground source={require('./assets/button.png')} style={styles.startButton} resizeMode="contain">
-          <Text style={styles.startButtonText}>START</Text>
-        </ImageBackground>
+        <TouchableOpacity onPress={() => navigation.navigate('FitnessPlanSetup')}>
+          <ImageBackground source={require('./assets/button.png')} style={styles.startButton} resizeMode="contain">
+            <Text style={styles.startButtonText}>START</Text>
+          </ImageBackground>
+        </TouchableOpacity>
         <Image
           source={require('./assets/man.gif')}
           style={styles.weightliftingMan}

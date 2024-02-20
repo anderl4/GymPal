@@ -5,6 +5,8 @@ import AppLoading from 'expo-app-loading';
 import * as Font from 'expo-font';
 import HomeScreen from './Home';
 import SecondScreen from './SecondScreen';
+import FitnessPlanSetup from './FitnessPlanSetup';
+import Settings from './Settings';
 
 const Stack = createNativeStackNavigator();
 
@@ -42,6 +44,8 @@ export default function App() {
     >
       <Stack.Screen name="Home" component={HomeScreen} />
       <Stack.Screen name="SecondScreen" component={SecondScreen} />
+      <Stack.Screen name="FitnessPlanSetup" component={FitnessPlanSetup} />
+      <Stack.Screen name="Settings" component={Settings} />
     </Stack.Navigator>
   </NavigationContainer>
 
