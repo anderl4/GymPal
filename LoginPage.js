@@ -36,7 +36,7 @@ export default function LoginPage() {
         <TouchableOpacity style={styles.backButton} onPress={() => navigation.goBack()}>
           <Text style={styles.backButtonText}>{"<"}</Text>
         </TouchableOpacity>
-        <Text style={styles.title}>Create Account</Text>
+        <Text style={styles.title}>Sign In</Text>
       </View>
 
       <View style={styles.form}>
@@ -60,10 +60,18 @@ export default function LoginPage() {
       <View style={styles.createButtonContainer}>
         <TouchableOpacity onPress={handlePress}>
           <ImageBackground source={require('./assets/button.png')} style={styles.createButton} resizeMode="contain">
-            <Text style={styles.createButtonText}>Create Plan</Text>
+            <Text style={styles.createButtonText}>Sign In</Text>
           </ImageBackground>
         </TouchableOpacity>
       </View>
+
+      <View style={styles.signupSection}>
+        <Text style={styles.signupText}>Don't have an account? </Text>
+        <TouchableOpacity onPress={() => navigation.navigate('SignupPage')}>
+          <Text style={styles.signupLink}>Get Started Now!</Text>
+        </TouchableOpacity>
+      </View>
+
       <AlertModel visible={showAlert} message={alertMessage} onClose={() => setShowAlert(false)} />
     </ScrollView>
   );
@@ -139,4 +147,17 @@ const styles = StyleSheet.create({
     lineHeight: 16.5,
     paddingRight: 25,
   },
+  signupSection: {
+    flexDirection: 'row',
+    justifyContent: 'center',
+    marginTop: 20
+  },
+  signupText: {
+    fontFamily: 'Poppins',
+  },
+  signupLink: {
+    color: '#FF715B',
+    fontFamily: 'Poppins',
+    textDecorationLine: 'underline'
+  }
 });

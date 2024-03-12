@@ -1,6 +1,7 @@
 import React from 'react';
 import { View, Text, StyleSheet, TouchableOpacity, Image, ImageBackground } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
+import { Ionicons } from '@expo/vector-icons';
 
 export default function SecondScreen() {
   const navigation = useNavigation();
@@ -28,6 +29,10 @@ export default function SecondScreen() {
     console.log(`${day} ${date}`); // placeholder (maybe we could have a modal popup with their recommendations for the day or something...)
   };
 
+  const handleProfilePress = () => {
+    console.log('Profile icon pressed');
+  };
+
   return (
     <View style={styles.container}>
       <View style={styles.header}>
@@ -37,12 +42,12 @@ export default function SecondScreen() {
         </View>
 
         <TouchableOpacity style={styles.settingsIcon} onPress={() => navigation.navigate('Settings')}>
-          <Image source={require('./assets/setting.png')} style={styles.settingsIcon} />
+          <Ionicons name="settings-outline" size={30} />
         </TouchableOpacity>
 
-        <TouchableOpacity style={styles.loginButton} onPress={() => navigation.navigate('LoginPage')}>
-                    <Text style={styles.loginButtonText}>Login</Text>
-        </TouchableOpacity>
+        <TouchableOpacity style={styles.profileIcon} onPress={handleProfilePress}>
+          <Ionicons name="person-circle-outline" size={32} /> 
+        </TouchableOpacity> 
       </View>
 
       <View style={styles.rectangle}>
@@ -107,9 +112,7 @@ const styles = StyleSheet.create({
     fontWeight: '400',
   },
   settingsIcon: {
-    width: 24,
-    height: 24,
-    marginTop: -6,
+    marginRight: 10,
   },
   loginButton: {
     backgroundColor: '#2F80ED',
@@ -257,5 +260,8 @@ const styles = StyleSheet.create({
     borderRadius: 26.27 / 2, 
     backgroundColor: '#FFFFFF', 
     marginTop: 10,
+  },
+  profileIcon: {
+    marginRight: 10,
   },
 });
