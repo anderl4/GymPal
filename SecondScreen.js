@@ -2,11 +2,32 @@ import React from 'react';
 import { View, Text, StyleSheet, TouchableOpacity, Image, ImageBackground } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 
-const days = ['Mon', 'Tue', 'Wed', 'Thu', 'Fri'];
-const daysNum = [25, 26, 27, 28, 29]
-
 export default function SecondScreen() {
-    const navigation = useNavigation();
+  const navigation = useNavigation();
+
+  const fetchDays = () => {
+      const currentDate = new Date();
+      const dayNames = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
+      let days = [];
+      let daysNum = [];
+
+      for (let i = 0; i <= 4; i++) {
+          const date = new Date(currentDate);
+          date.setDate(date.getDate() + i);
+          days.push(dayNames[date.getDay()]);
+          daysNum.push(date.getDate());
+      }
+
+      return { days, daysNum };
+  };
+
+  const { days, daysNum } = fetchDays();
+  const currentDate = new Date().getDate();
+
+  const handlePress = (day, date) => {
+    console.log(`${day} ${date}`); // placeholder (maybe we could have a modal popup with their recommendations for the day or something...)
+  };
+
   return (
     <View style={styles.container}>
       <View style={styles.header}>
@@ -39,14 +60,18 @@ export default function SecondScreen() {
 
       <Text style={styles.fitnessActivitiesTitle}>My Fitness Activities</Text>
       <View style={{ flexDirection: 'row', marginLeft: 10, marginRight: 10, marginTop: 20, flexWrap: 'wrap' }}>
-        {days.map((day, index) => (
-          <View key={index} style={ [styles.dayRectangle, index === 0 && styles.dayRectangleSelected ]}>
-            <Text style={[styles.dayText, index === 0 && styles.dayTextSelected]}>{day}</Text>
-            <View style={styles.circle}>
-              <Text style={[styles.dayTextNum, index === 0 && styles.dayTextNumSelected]}>{daysNum[index]}</Text>
-            </View>
-          </View>
-        ))}
+          {days.map((day, index) => (
+              <TouchableOpacity 
+                  key={index} 
+                  style={[styles.dayRectangle, daysNum[index] === currentDate && styles.dayRectangleSelected]}
+                  onPress={() => handlePress(day, daysNum[index])}
+              >
+                  <Text style={[styles.dayText, daysNum[index] === currentDate && styles.dayTextSelected]}>{day}</Text>
+                  <View style={styles.circle}>
+                      <Text style={[styles.dayTextNum, daysNum[index] === currentDate && styles.dayTextNumSelected]}>{daysNum[index]}</Text>
+                  </View>
+              </TouchableOpacity>
+          ))}
       </View>
 
     </View>
@@ -100,7 +125,7 @@ const styles = StyleSheet.create({
       fontWeight: '600',
   },
   rectangle: {
-    width: 380,
+    width: '90%',
     height: 145,
     backgroundColor: '#7FCDFE',
     justifyContent: 'center',
