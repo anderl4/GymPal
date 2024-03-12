@@ -75,6 +75,7 @@ export default function SignupPage() {
           style={styles.input}
           value={password}
           onChangeText={text => setPassword(text)}
+          secureTextEntry
         />
       </View>
       
