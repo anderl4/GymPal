@@ -7,6 +7,8 @@ import HomeScreen from './Home';
 import SecondScreen from './SecondScreen';
 import FitnessPlanSetup from './FitnessPlanSetup';
 import Settings from './Settings';
+import LoginPage from './LoginPage';
+import SignupPage from './SignupPage';
 
 const Stack = createNativeStackNavigator();
 
@@ -46,6 +48,8 @@ export default function App() {
       <Stack.Screen name="SecondScreen" component={SecondScreen} />
       <Stack.Screen name="FitnessPlanSetup" component={FitnessPlanSetup} />
       <Stack.Screen name="Settings" component={Settings} />
+      <Stack.Screen name="LoginPage" component={LoginPage} />
+      <Stack.Screen name="SignupPage" component={SignupPage} />
     </Stack.Navigator>
   </NavigationContainer>
 

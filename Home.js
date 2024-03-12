@@ -11,7 +11,7 @@ export default function App() {
       <Text style={styles.simplifyText}>Simplify the Path to a Healthy Life</Text>
       <Image source={require('./assets/gymbro.png')} style={styles.gymBro} />
       <View style={styles.lowerSection}>
-        <TouchableOpacity style={styles.getStartedButton} onPress={() => navigation.navigate('SecondScreen')}>
+        <TouchableOpacity style={styles.getStartedButton} onPress={() => navigation.navigate('LoginPage')}>
           <Text style={styles.getStartedButtonText}>Get Started</Text>
         </TouchableOpacity>
       </View>

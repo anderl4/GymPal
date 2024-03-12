@@ -18,6 +18,7 @@ export default function LoginPage() {
 
   const handlePress = () => {
     console.log('log in button pressed');
+    pass = false; // placeholder
     if (isEmptyField()) {
       console.log('one or more fields is empty');
       setAlertMessage('Please fill in all fields.');
@@ -27,6 +28,7 @@ export default function LoginPage() {
     } else {
       console.log('all fields filled');
       // TODO: save the account
+      navigation.navigate('SecondScreen'); // placeholder, just bring them to the home page for now
     }
   };
   
@@ -36,7 +38,7 @@ export default function LoginPage() {
         <TouchableOpacity style={styles.backButton} onPress={() => navigation.goBack()}>
           <Text style={styles.backButtonText}>{"<"}</Text>
         </TouchableOpacity>
-        <Text style={styles.title}>Create Account</Text>
+        <Text style={styles.title}>Sign In or Create an Account</Text>
       </View>
 
       <View style={styles.form}>
@@ -59,7 +61,12 @@ export default function LoginPage() {
       <View style={styles.createButtonContainer}>
         <TouchableOpacity onPress={handlePress}>
           <ImageBackground source={require('./assets/button.png')} style={styles.createButton} resizeMode="contain">
-            <Text style={styles.createButtonText}>Create Plan</Text>
+            <Text style={styles.createButtonText}>Sign In</Text>
+          </ImageBackground>
+        </TouchableOpacity>
+        <TouchableOpacity onPress={() => navigation.navigate('SignupPage')}>
+          <ImageBackground source={require('./assets/button.png')} style={styles.createButton} resizeMode="contain">
+            <Text style={styles.createButtonText}>Sign Up</Text>
           </ImageBackground>
         </TouchableOpacity>
       </View>
@@ -122,8 +129,9 @@ const styles = StyleSheet.create({
   createButtonContainer: {
     paddingHorizontal: 45,
     paddingVertical: 10,
-    justifyContent: 'flex-end',
-    alignItems: 'flex-start',
+    justifyContent: 'flex-start',
+    alignItems: 'flex-end',
+    flexDirection: 'row',
   },
   createButton: {
     justifyContent: 'center',
@@ -134,7 +142,7 @@ const styles = StyleSheet.create({
   createButtonText: {
     color: '#FFF',
     fontFamily: 'Poppins',
-    fontSize: 10,
+    fontSize: 12,
     lineHeight: 16.5,
     paddingRight: 25,
   },

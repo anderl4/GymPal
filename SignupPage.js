@@ -28,6 +28,7 @@ export default function SignupPage() {
     } else {
       console.log('all fields filled');
       // TODO: save the account
+      navigation.navigate('SecondScreen'); // placeholder, just bring them to the home page for now
     }
   };
   
@@ -81,7 +82,7 @@ export default function SignupPage() {
       <View style={styles.createButtonContainer}>
         <TouchableOpacity onPress={handlePress}>
           <ImageBackground source={require('./assets/button.png')} style={styles.createButton} resizeMode="contain">
-            <Text style={styles.createButtonText}>Create Plan</Text>
+            <Text style={styles.createButtonText}>Sign Up</Text>
           </ImageBackground>
         </TouchableOpacity>
       </View>
