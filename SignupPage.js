@@ -3,33 +3,31 @@ import { View, Text, TextInput, StyleSheet, TouchableOpacity, ImageBackground, S
 import { useNavigation } from '@react-navigation/native';
 import AlertModel from './AlertModel';
 
-export default function FitnessPlanSetup() {
+export default function SignupPage() {
   const navigation = useNavigation();
 
   const [showAlert, setShowAlert] = useState(false);
   const [alertMessage, setAlertMessage] = useState('');
 
-  const [age, setAge] = useState('');
-  const [gender, setGender] = useState('');
-  const [weight, setWeight] = useState('');
-  const [height, setHeight] = useState('');
-  const [experienceLevel, setExperienceLevel] = useState('');
-  const [activityLevel, setActivityLevel] = useState('');
+  const [firstName, setFirstName] = useState('');
+  const [lastName, setLastName] = useState('');
+  const [username, setUsername] = useState('');
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
 
   const isEmptyField = () => {
-    return !age || !gender || !weight || !height || !experienceLevel || !activityLevel;
+    return !firstName || !lastName || !username || !email || !password;
   };
 
   const handlePress = () => {
-    console.log('create plan button pressed');
+    console.log('create account button pressed');
     if (isEmptyField()) {
       console.log('one or more fields is empty');
       setAlertMessage('Please fill in all fields.');
       setShowAlert(true);
     } else {
       console.log('all fields filled');
-      // TODO: save the plan set up
-      navigation.navigate('CreateAccountPage');
+      // TODO: save the account
     }
   };
   
@@ -39,53 +37,46 @@ export default function FitnessPlanSetup() {
         <TouchableOpacity style={styles.backButton} onPress={() => navigation.goBack()}>
           <Text style={styles.backButtonText}>{"<"}</Text>
         </TouchableOpacity>
-        <Text style={styles.title}>Fitness Plan</Text>
+        <Text style={styles.title}>Create Account</Text>
       </View>
 
       <View style={styles.form}>
-        <Text style={styles.label}>Age</Text>
+        <Text style={styles.label}>First Name</Text>
         <TextInput
           style={styles.input}
-          keyboardType="numeric"
-          value={age}
-          onChangeText={text => setAge(text)}
+          value={firstName}
+          onChangeText={text => setFirstName(text)}
         />
 
-        <Text style={styles.label}>Gender</Text>
+      <Text style={styles.label}>Last Name</Text>
         <TextInput
           style={styles.input}
-          value={gender}
-          onChangeText={text => setGender(text)}
+          value={lastName}
+          onChangeText={text => setLastName(text)}
         />
 
-        <Text style={styles.label}>Weight(kg)</Text>
+      <Text style={styles.label}>Username</Text>
         <TextInput
           style={styles.input}
-          value={weight}
-          onChangeText={text => setWeight(text)}
+          value={username}
+          onChangeText={text => setUsername(text)}
         />
 
-        <Text style={styles.label}>Height(cm)</Text>
+      <Text style={styles.label}>Email</Text>
         <TextInput
           style={styles.input}
-          value={height}
-          onChangeText={text => setHeight(text)}
+          value={email}
+          onChangeText={text => setEmail(text)}
         />
 
-        <Text style={styles.label}>Level of Experience</Text>
+      <Text style={styles.label}>Password</Text>
         <TextInput
           style={styles.input}
-          value={experienceLevel}
-          onChangeText={text => setExperienceLevel(text)}
-        />
-
-        <Text style={styles.label}>Activity Level</Text>
-        <TextInput
-          style={styles.input}
-          value={activityLevel}
-          onChangeText={text => setActivityLevel(text)}
+          value={password}
+          onChangeText={text => setPassword(text)}
         />
       </View>
+      
 
       <View style={styles.createButtonContainer}>
         <TouchableOpacity onPress={handlePress}>

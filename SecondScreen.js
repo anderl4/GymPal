@@ -14,10 +14,16 @@ export default function SecondScreen() {
           <Text style={styles.helloAnakin}>Hello, Anakin</Text>
           <Text style={styles.helloAnakinSubtitle}>What did you workout today?</Text>
         </View>
+
         <TouchableOpacity style={styles.settingsIcon} onPress={() => navigation.navigate('Settings')}>
           <Image source={require('./assets/setting.png')} style={styles.settingsIcon} />
         </TouchableOpacity>
+
+        <TouchableOpacity style={styles.loginButton} onPress={() => navigation.navigate('LoginPage')}>
+                    <Text style={styles.loginButtonText}>Login</Text>
+        </TouchableOpacity>
       </View>
+
       <View style={styles.rectangle}>
         <Text style={styles.rectangleText}>Create your fitness plan today!</Text>
         <TouchableOpacity onPress={() => navigation.navigate('FitnessPlanSetup')}>
@@ -30,6 +36,7 @@ export default function SecondScreen() {
           style={styles.weightliftingMan}
         />
       </View>
+
       <Text style={styles.fitnessActivitiesTitle}>My Fitness Activities</Text>
       <View style={{ flexDirection: 'row', marginLeft: 10, marginRight: 10, marginTop: 20, flexWrap: 'wrap' }}>
         {days.map((day, index) => (
@@ -41,6 +48,7 @@ export default function SecondScreen() {
           </View>
         ))}
       </View>
+
     </View>
   );
 }
@@ -77,6 +85,19 @@ const styles = StyleSheet.create({
     width: 24,
     height: 24,
     marginTop: -6,
+  },
+  loginButton: {
+    backgroundColor: '#2F80ED',
+    paddingVertical: 10,
+    paddingHorizontal: 20,
+    borderRadius: 5,
+    marginLeft: 10,
+  },
+  loginButtonText: {
+      color: '#FFF',
+      fontSize: 16,
+      fontFamily: 'Poppins',
+      fontWeight: '600',
   },
   rectangle: {
     width: 380,
