@@ -1,7 +1,7 @@
-import React, { useState } from 'react';
+import React, { useCallback, useEffect, useState } from 'react';
 import { NavigationContainer } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
-import AppLoading from 'expo-app-loading';
+import * as SplashScreen from 'expo-splash-screen';
 import * as Font from 'expo-font';
 import HomeScreen from './Home';
 import SecondScreen from './SecondScreen';
@@ -11,6 +11,7 @@ import LoginPage from './LoginPage';
 import SignupPage from './SignupPage';
 
 const Stack = createNativeStackNavigator();
+SplashScreen.preventAutoHideAsync();
 
 async function loadFonts() {
   await Font.loadAsync({
@@ -24,20 +25,34 @@ async function loadFonts() {
 }
 
 export default function App() {
-  const [fontsLoaded, setFontsLoaded] = useState(false);
+  const [appIsReady, setAppIsReady] = useState(false);
 
-  if (!fontsLoaded) {
-    return (
-      <AppLoading
-        startAsync={loadFonts}
-        onFinish={() => setFontsLoaded(true)}
-        onError={console.error}
-      />
-    );
+  useEffect(() => {
+    async function prepare() {
+      try {
+        await loadFonts();
+      } catch (e) {
+        console.error(e);
+      } finally {
+        setAppIsReady(true);
+      }
+    }
+
+    prepare();
+  }, []);
+
+  const onLayoutRootView = useCallback(async () => { 
+    if (appIsReady) {
+      await SplashScreen.hideAsync();
+    }
+  }, [appIsReady]);
+
+  if (!appIsReady) {
+    return null;
   }
 
   return (
-  <NavigationContainer>
+  <NavigationContainer onReady={onLayoutRootView}>
     <Stack.Navigator
       initialRouteName="Home"
       screenOptions={{
