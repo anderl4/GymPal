@@ -2,6 +2,8 @@ import React , { useState } from 'react';
 import { View, Text, TextInput, StyleSheet, TouchableOpacity, ImageBackground, ScrollView, Alert} from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import AlertModel from './AlertModel';
+import { createUserWithEmailAndPassword } from 'firebase/auth';
+import { auth } from './firebase';
 
 export default function SignupPage() {
   const navigation = useNavigation();
@@ -28,7 +30,19 @@ export default function SignupPage() {
     } else {
       console.log('all fields filled');
       // TODO: save the account
-      navigation.navigate('SecondScreen'); // placeholder, just bring them to the home page for now
+      createUserWithEmailAndPassword(auth, email, password)
+      .then((userCredential) => {
+        // Signed up
+        // TODO: we want to probably save the other information in a database or something (first name, last name, etc)
+        const user = userCredential.user;
+        navigation.navigate('SecondScreen'); // placeholder, just go to second screen for now
+      })
+      .catch((error) => {
+        // Signup fail
+        const errorCode = error.code;
+        const errorMessage = error.message;
+        console.error(errorCode + ': ' + errorMessage);
+      })
     }
   };
   

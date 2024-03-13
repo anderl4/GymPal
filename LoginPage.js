@@ -2,6 +2,8 @@ import React , { useState } from 'react';
 import { View, Text, TextInput, StyleSheet, TouchableOpacity, ImageBackground, ScrollView, Alert} from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import AlertModel from './AlertModel';
+import { signInWithEmailAndPassword } from 'firebase/auth';
+import { auth } from './firebase';
 
 export default function LoginPage() {
   const navigation = useNavigation();
@@ -22,11 +24,22 @@ export default function LoginPage() {
       console.log('one or more fields is empty');
       setAlertMessage('Please fill in all fields.');
       setShowAlert(true);
-    } else if (pass) {
-      // check if detials are valid
     } else {
       console.log('all fields filled');
-      // TODO: save the account
+      // check login information
+      signInWithEmailAndPassword(auth, usernameEmail, password)
+      .then((userCredential) => {
+        // TODO: save the account
+        // signed in
+        const user = userCredential.user;
+        navigation.navigate('SecondScreen'); // placeholder, just go to second screen for now
+      })
+      .catch((error) => {
+        // login failed
+        const errorCode = error.code;
+        const errorMessage = error.message;
+        console.error(errorCode + ': ' + errorMessage);
+      })
     }
   };
   

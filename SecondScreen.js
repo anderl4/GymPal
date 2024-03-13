@@ -2,6 +2,7 @@ import React from 'react';
 import { View, Text, StyleSheet, TouchableOpacity, Image, ImageBackground } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import { Ionicons } from '@expo/vector-icons';
+import { auth } from './firebase';
 
 export default function SecondScreen() {
   const navigation = useNavigation();
@@ -37,7 +38,7 @@ export default function SecondScreen() {
     <View style={styles.container}>
       <View style={styles.header}>
         <View style={{flex: 1, justifyContent: 'center'}}>
-          <Text style={styles.helloAnakin}>Hello, Anakin</Text>
+          <Text style={styles.helloAnakin}>Hello, {auth.currentUser.email}</Text>
           <Text style={styles.helloAnakinSubtitle}>What did you workout today?</Text>
         </View>
 
@@ -78,6 +79,17 @@ export default function SecondScreen() {
               </TouchableOpacity>
           ))}
       </View>
+
+      <TouchableOpacity style={styles.button} onPress={() => auth.signOut().then(function() {
+        // sign out successful
+        console.log("signed out");
+      })
+      .catch(function(error) {
+        // sign out error
+        console.error(error);
+      })}>
+        <Text style={styles.buttonText}>temporary signout button</Text>
+      </TouchableOpacity>
 
     </View>
   );
@@ -251,7 +263,6 @@ const styles = StyleSheet.create({
     fontSize: 14,
     color: '#2F80ED',
   },
-  
   circle: {
     justifyContent: 'center',
     alignItems: 'center',
@@ -263,5 +274,18 @@ const styles = StyleSheet.create({
   },
   profileIcon: {
     marginRight: 10,
+  },
+  button: {
+    backgroundColor: '#f44336',
+    padding: 15,
+    borderRadius: 5,
+    alignItems: 'center',
+    justifyContent: 'center',
+    margin: 30,
+  },
+  buttonText: {
+    color: 'white',
+    fontWeight: 'bold',
+    fontFamily: 'Montserrat-Bold',
   },
 });

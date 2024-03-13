@@ -1,9 +1,24 @@
 import { StatusBar } from 'expo-status-bar';
 import { StyleSheet, Text, View, Image, TouchableOpacity } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
+import { auth } from './firebase';
+import { onAuthStateChanged } from 'firebase/auth';
 
 export default function App() {
     const navigation = useNavigation();
+
+    onAuthStateChanged(auth, (user) => {
+      if (user) {
+        // user is signed in
+        console.log('signed in');
+        console.log(user.email);
+        navigation.navigate('SecondScreen'); // navigate to second screen if user is logged in
+      } else {
+        // user is signed out
+        navigation.navigate('Home'); // navigate home if signed out
+      }
+    })
+
   return (
     <View style={styles.container}>
       <Image source={require('./assets/dumbbell.png')} style={styles.dumbbellImage} />
