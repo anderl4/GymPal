@@ -2,6 +2,9 @@ import React , { useState } from 'react';
 import { View, Text, TextInput, StyleSheet, TouchableOpacity, ImageBackground, ScrollView, Alert} from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import AlertModel from './AlertModel';
+import { Picker } from '@react-native-picker/picker';
+import { setDoc, doc } from 'firebase/firestore/lite';
+import { auth, db } from './firebase';
 
 export default function FitnessPlanSetup() {
   const navigation = useNavigation();
@@ -13,12 +16,28 @@ export default function FitnessPlanSetup() {
   const [gender, setGender] = useState('');
   const [weight, setWeight] = useState('');
   const [height, setHeight] = useState('');
-  const [experienceLevel, setExperienceLevel] = useState('');
-  const [activityLevel, setActivityLevel] = useState('');
+  const [experienceLevel, setExperienceLevel] = useState('Beginner');
+  const [activityLevel, setActivityLevel] = useState('1-2 times a week');
 
   const isEmptyField = () => {
     return !age || !gender || !weight || !height || !experienceLevel || !activityLevel;
   };
+
+  const addFitnessPlanToDB = async (age, gender, weight, height, experienceLevel, activityLevel) => {
+    try {
+      await setDoc(doc(db, "users", auth.currentUser.uid), {
+        age: age,
+        gender: gender,
+        weight: weight,
+        height: height,
+        experienceLevel: experienceLevel,
+        activityLevel: activityLevel,
+        fitnessPlanSetup: true,
+      }, { merge: true });
+    } catch (err) {
+      console.log(err);
+    }
+  }
 
   const handlePress = () => {
     console.log('create plan button pressed');
@@ -29,9 +48,13 @@ export default function FitnessPlanSetup() {
     } else {
       console.log('all fields filled');
       // TODO: save the plan set up
-      navigation.navigate('CreateAccountPage');
+      addFitnessPlanToDB(age, gender, weight, height, experienceLevel, activityLevel);
+      navigation.navigate('SecondScreen'); // navigate back to the dashboard for now
     }
   };
+
+  const levels = ['Beginner', 'Intermediate', 'Expert'];
+  const activityLevels = ['1-2 times a week', '2-3 times per week', '3-4 times per week', '4-5 times per week', '5-6 times per week'];
   
   return (
     <ScrollView style={styles.container}>
@@ -46,7 +69,7 @@ export default function FitnessPlanSetup() {
         <Text style={styles.label}>Age</Text>
         <TextInput
           style={styles.input}
-          keyboardType="numeric"
+          inputMode="numeric"
           value={age}
           onChangeText={text => setAge(text)}
         />
@@ -61,6 +84,7 @@ export default function FitnessPlanSetup() {
         <Text style={styles.label}>Weight(kg)</Text>
         <TextInput
           style={styles.input}
+          inputMode="numeric"
           value={weight}
           onChangeText={text => setWeight(text)}
         />
@@ -68,23 +92,34 @@ export default function FitnessPlanSetup() {
         <Text style={styles.label}>Height(cm)</Text>
         <TextInput
           style={styles.input}
+          inputMode="numeric"
           value={height}
           onChangeText={text => setHeight(text)}
         />
 
         <Text style={styles.label}>Level of Experience</Text>
-        <TextInput
-          style={styles.input}
-          value={experienceLevel}
-          onChangeText={text => setExperienceLevel(text)}
-        />
+        <View style={[styles.input, { padding:0 }]}>
+          <Picker
+            selectedValue={experienceLevel}
+            onValueChange={(itemValue) => setExperienceLevel(itemValue)}
+          >
+            {levels.map((level) => (
+              <Picker.Item label={level} value={level} key={level} />
+            ))}
+          </Picker>
+        </View>
 
         <Text style={styles.label}>Activity Level</Text>
-        <TextInput
-          style={styles.input}
-          value={activityLevel}
-          onChangeText={text => setActivityLevel(text)}
-        />
+        <View style={[styles.input, { padding:0 }]}>
+          <Picker
+            selectedValue={activityLevel}
+            onValueChange={(itemValue) => setActivityLevel(itemValue)}
+          >
+            {activityLevels.map((level) => (
+              <Picker.Item label={level} value={level} key={level} />
+            ))}
+          </Picker>
+        </View>
       </View>
 
       <View style={styles.createButtonContainer}>
@@ -94,6 +129,11 @@ export default function FitnessPlanSetup() {
           </ImageBackground>
         </TouchableOpacity>
       </View>
+
+      <View style={styles.hintTextContainer}>
+        <Text style={styles.hintText}>You can always change this later!</Text>
+      </View>
+
       <AlertModel visible={showAlert} message={alertMessage} onClose={() => setShowAlert(false)} />
     </ScrollView>
   );
@@ -168,5 +208,13 @@ const styles = StyleSheet.create({
     fontSize: 10,
     lineHeight: 16.5,
     paddingRight: 25,
+  },
+  hintTextContainer: {
+    flexDirection: 'row',
+    justifyContent: 'center',
+    marginTop: 20
+  },
+  hintText: {
+    fontFamily: 'Poppins',
   },
 });

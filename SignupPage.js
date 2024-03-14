@@ -3,7 +3,8 @@ import { View, Text, TextInput, StyleSheet, TouchableOpacity, ImageBackground, S
 import { useNavigation } from '@react-navigation/native';
 import AlertModel from './AlertModel';
 import { createUserWithEmailAndPassword, updateProfile, signInWithEmailAndPassword } from 'firebase/auth';
-import { auth } from './firebase';
+import { setDoc, doc } from 'firebase/firestore/lite';
+import { auth, db } from './firebase';
 
 export default function SignupPage() {
   const navigation = useNavigation();
@@ -29,6 +30,12 @@ export default function SignupPage() {
       // so a temporary solution is to sign the user out and back in
       auth.signOut();
       signInWithEmailAndPassword(auth, email, password);
+
+      // add data to db
+      await setDoc(doc(db, "users", auth.currentUser.uid), {
+        displayName: username,
+        fitnessPlanSetup: false,
+      }, { merge: true });
       return true;
     } catch (err) {
       console.log(err)
