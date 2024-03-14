@@ -2,7 +2,7 @@ import React , { useState } from 'react';
 import { View, Text, TextInput, StyleSheet, TouchableOpacity, ImageBackground, ScrollView, Alert} from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import AlertModel from './AlertModel';
-import { createUserWithEmailAndPassword } from 'firebase/auth';
+import { createUserWithEmailAndPassword, updateProfile, signInWithEmailAndPassword } from 'firebase/auth';
 import { auth } from './firebase';
 
 export default function SignupPage() {
@@ -11,15 +11,38 @@ export default function SignupPage() {
   const [showAlert, setShowAlert] = useState(false);
   const [alertMessage, setAlertMessage] = useState('');
 
-  const [firstName, setFirstName] = useState('');
-  const [lastName, setLastName] = useState('');
   const [username, setUsername] = useState('');
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
 
   const isEmptyField = () => {
-    return !firstName || !lastName || !username || !email || !password;
+    return !username || !email || !password;
   };
+
+  const register = async (username, email, password) => {
+    try {
+      await createUserWithEmailAndPassword(auth, email, password);
+      await updateProfile(auth.currentUser, { displayName: username});
+
+      // There's a bug where the displayName isn't displayed because as soon as createUserEmailAndPassword is called the user is logged in
+      // when you are logged in or out, this triggers the onAuthStateChanged, and this happens before the updateProfile could be called
+      // so a temporary solution is to sign the user out and back in
+      auth.signOut();
+      signInWithEmailAndPassword(auth, email, password);
+      return true;
+    } catch (err) {
+      console.log(err)
+      return false;
+    }
+  };
+
+  const handleSignup = async () => {
+    if (await register(username, email, password)) {
+      // registeration success
+    } else {
+      // registeration failure
+    }
+  }
 
   const handlePress = () => {
     console.log('create account button pressed');
@@ -29,20 +52,7 @@ export default function SignupPage() {
       setShowAlert(true);
     } else {
       console.log('all fields filled');
-      // TODO: save the account
-      createUserWithEmailAndPassword(auth, email, password)
-      .then((userCredential) => {
-        // Signed up
-        // TODO: we want to probably save the other information in a database or something (first name, last name, etc)
-        const user = userCredential.user;
-        navigation.navigate('SecondScreen'); // placeholder, just go to second screen for now
-      })
-      .catch((error) => {
-        // Signup fail
-        const errorCode = error.code;
-        const errorMessage = error.message;
-        console.error(errorCode + ': ' + errorMessage);
-      })
+      handleSignup();
     }
   };
   
@@ -56,21 +66,8 @@ export default function SignupPage() {
       </View>
 
       <View style={styles.form}>
-        <Text style={styles.label}>First Name</Text>
-        <TextInput
-          style={styles.input}
-          value={firstName}
-          onChangeText={text => setFirstName(text)}
-        />
 
-      <Text style={styles.label}>Last Name</Text>
-        <TextInput
-          style={styles.input}
-          value={lastName}
-          onChangeText={text => setLastName(text)}
-        />
-
-      <Text style={styles.label}>Username</Text>
+      <Text style={styles.label}>Display Name</Text>
         <TextInput
           style={styles.input}
           value={username}

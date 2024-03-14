@@ -53,7 +53,7 @@ export default function LoginPage() {
       </View>
 
       <View style={styles.form}>
-      <Text style={styles.label}>Username or Email</Text>
+      <Text style={styles.label}>Email</Text>
         <TextInput
           style={styles.input}
           value={usernameEmail}

@@ -38,7 +38,7 @@ export default function SecondScreen() {
     <View style={styles.container}>
       <View style={styles.header}>
         <View style={{flex: 1, justifyContent: 'center'}}>
-          <Text style={styles.helloAnakin}>Hello, {auth.currentUser.email}</Text>
+          <Text style={styles.helloAnakin}>Hello, {auth.currentUser.displayName}</Text>
           <Text style={styles.helloAnakinSubtitle}>What did you workout today?</Text>
         </View>
 

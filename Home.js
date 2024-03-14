@@ -10,8 +10,6 @@ export default function App() {
     onAuthStateChanged(auth, (user) => {
       if (user) {
         // user is signed in
-        console.log('signed in');
-        console.log(user.email);
         navigation.navigate('SecondScreen'); // navigate to second screen if user is logged in
       } else {
         // user is signed out
