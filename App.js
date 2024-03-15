@@ -9,6 +9,8 @@ import FitnessPlanSetup from './FitnessPlanSetup';
 import Settings from './Settings';
 import LoginPage from './LoginPage';
 import SignupPage from './SignupPage';
+import FitnessPlan from './FitnessPlan';
+import FlashMessage from 'react-native-flash-message';
 
 const Stack = createNativeStackNavigator();
 SplashScreen.preventAutoHideAsync();
@@ -65,7 +67,9 @@ export default function App() {
       <Stack.Screen name="Settings" component={Settings} />
       <Stack.Screen name="LoginPage" component={LoginPage} />
       <Stack.Screen name="SignupPage" component={SignupPage} />
+      <Stack.Screen name="FitnessPlan" component={FitnessPlan} />
     </Stack.Navigator>
+    <FlashMessage position="bottom" />
   </NavigationContainer>
 
   );

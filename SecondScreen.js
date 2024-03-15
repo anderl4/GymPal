@@ -52,8 +52,8 @@ export default function SecondScreen() {
       </View>
 
       <View style={styles.rectangle}>
-        <Text style={styles.rectangleText}>Create your fitness plan today!</Text>
-        <TouchableOpacity onPress={() => navigation.navigate('FitnessPlanSetup')}>
+        <Text style={styles.rectangleText}>View your fitness plan today!</Text>
+        <TouchableOpacity onPress={() => navigation.navigate('FitnessPlan')}>
           <ImageBackground source={require('./assets/button.png')} style={styles.startButton} resizeMode="contain">
             <Text style={styles.startButtonText}>START</Text>
           </ImageBackground>

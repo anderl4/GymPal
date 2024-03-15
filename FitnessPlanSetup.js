@@ -5,6 +5,7 @@ import AlertModel from './AlertModel';
 import { Picker } from '@react-native-picker/picker';
 import { setDoc, doc } from 'firebase/firestore/lite';
 import { auth, db } from './firebase';
+import { showMessage, hideMessage } from 'react-native-flash-message';
 
 export default function FitnessPlanSetup() {
   const navigation = useNavigation();
@@ -49,7 +50,13 @@ export default function FitnessPlanSetup() {
       console.log('all fields filled');
       // TODO: save the plan set up
       addFitnessPlanToDB(age, gender, weight, height, experienceLevel, activityLevel);
-      navigation.navigate('SecondScreen'); // navigate back to the dashboard for now
+      showMessage({
+        message: "You created a fitness plan!",
+        description: "Press the 'start' button again to view/modify it!",
+        type: "success",
+        duration: 3000,
+      });
+      navigation.navigate('SecondScreen'); // navigate to the fitness plan
     }
   };
 
@@ -59,7 +66,7 @@ export default function FitnessPlanSetup() {
   return (
     <ScrollView style={styles.container}>
       <View style={styles.header}>
-        <TouchableOpacity style={styles.backButton} onPress={() => navigation.goBack()}>
+        <TouchableOpacity style={styles.backButton} onPress={() => navigation.navigate('SecondScreen')}>
           <Text style={styles.backButtonText}>{"<"}</Text>
         </TouchableOpacity>
         <Text style={styles.title}>Fitness Plan</Text>
@@ -131,7 +138,7 @@ export default function FitnessPlanSetup() {
       </View>
 
       <View style={styles.hintTextContainer}>
-        <Text style={styles.hintText}>You can always change this later!</Text>
+        <Text style={styles.hintText}>NOTE: You can always change this later!</Text>
       </View>
 
       <AlertModel visible={showAlert} message={alertMessage} onClose={() => setShowAlert(false)} />
