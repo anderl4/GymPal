@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { View, Text, StyleSheet, ScrollView, TouchableOpacity } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import { getDoc, doc } from 'firebase/firestore/lite';
-import { auth, db } from './firebase'; // Assuming your firebase.js file
+import { auth, db } from './firebase';
 
 export default function FitnessPlan() {
   const navigation = useNavigation();

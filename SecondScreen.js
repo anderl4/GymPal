@@ -1,8 +1,9 @@
 import React from 'react';
-import { View, Text, StyleSheet, TouchableOpacity, Image, ImageBackground } from 'react-native';
+import { View, Text, StyleSheet, TouchableOpacity, Image, ImageBackground, TouchableWithoutFeedback } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import { Ionicons } from '@expo/vector-icons';
 import { auth } from './firebase';
+import FloatingButton from './FloatingButton';
 
 export default function SecondScreen() {
   const navigation = useNavigation();
@@ -91,6 +92,8 @@ export default function SecondScreen() {
         <Text style={styles.buttonText}>temporary signout button</Text>
       </TouchableOpacity>
 
+      {/* COOL FLOATING ACTION BUTTON!! */}
+      <FloatingButton style={{ bottom: 120, right: 80}} />
     </View>
   );
 }
@@ -102,6 +105,10 @@ const styles = StyleSheet.create({
     justifyContent: 'flex-start',
     alignItems: 'center',
     paddingTop: 80,
+  },
+  buttonContainer: {
+    flex: 1,
+    alignItems: "center",
   },
   header: {
     flexDirection: 'row',
