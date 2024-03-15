@@ -3,25 +3,28 @@ import { View, Text, StyleSheet, Pressable, Image, ImageBackground } from 'react
 import { useNavigation } from '@react-navigation/native';
 import { Ionicons } from '@expo/vector-icons';
 import { auth } from './firebase';
+import * as Progress from 'react-native-progress';
+
+const fetchDays = () => {
+  const currentDate = new Date();
+  const dayNames = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
+  let days = [];
+  let daysNum = [];
+
+  for (let i = 0; i <= 4; i++) {
+      const date = new Date(currentDate);
+      date.setDate(date.getDate() + i);
+      days.push(dayNames[date.getDay()]);
+      daysNum.push(date.getDate());
+  }
+
+  return { days, daysNum };
+};
 
 export default function SecondScreen() {
   const navigation = useNavigation();
 
-  const fetchDays = () => {
-      const currentDate = new Date();
-      const dayNames = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
-      let days = [];
-      let daysNum = [];
-
-      for (let i = 0; i <= 4; i++) {
-          const date = new Date(currentDate);
-          date.setDate(date.getDate() + i);
-          days.push(dayNames[date.getDay()]);
-          daysNum.push(date.getDate());
-      }
-
-      return { days, daysNum };
-  };
+  const lifestyleScore = 0.4; // Example value
 
   const { days, daysNum } = fetchDays();
   const currentDate = new Date().getDate();
@@ -33,6 +36,8 @@ export default function SecondScreen() {
   const handleProfilePress = () => {
     console.log('Profile icon pressed');
   };
+
+  console.log('lifestyleScore:', lifestyleScore);
 
   return (
     <View style={styles.container}>
@@ -49,6 +54,16 @@ export default function SecondScreen() {
         <Pressable style={styles.profileIcon} onPress={handleProfilePress}>
           <Ionicons name="person-circle-outline" size={32} /> 
         </Pressable> 
+      </View>
+
+      <View style={styles.progressContainer}>
+        <Text style={styles.progressTitle}>Lifestyle Score</Text>
+        <Progress.Circle
+          progress={lifestyleScore} // Ensure this value is correctly calculated
+          size={200}
+          showsText={true}
+          formatText={(progress) => `${Math.round(progress * 100)}%`}
+        />
       </View>
 
       <View style={styles.rectangle}>
@@ -97,6 +112,18 @@ export default function SecondScreen() {
 
 
 const styles = StyleSheet.create({
+  progressContainer: {
+    alignItems: 'center',
+    justifyContent: 'center',
+    marginBottom: 20,
+  },
+  progressTitle: {
+    color: '#060302',
+    fontFamily: 'Poppins',
+    fontSize: 20,
+    fontWeight: '600',
+    marginBottom: 10,
+  },  
   container: {
     flex: 1,
     justifyContent: 'flex-start',
@@ -193,12 +220,12 @@ const styles = StyleSheet.create({
     marginLeft: 20,
   },
   
-  rectangleText: {
-    color: '#191919',
-    fontFamily: 'Lato-Bold',
-    fontSize: 20,
-    width: '60%',
-  },
+  // rectangleText: {
+  //   color: '#191919',
+  //   fontFamily: 'Lato-Bold',
+  //   fontSize: 20,
+  //   width: '60%',
+  // },
   
   fitnessActivitiesTitle: {
     width: 269,
