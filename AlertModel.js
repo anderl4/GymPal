@@ -1,5 +1,5 @@
 import React from 'react';
-import { Modal, View, Text, TouchableOpacity } from 'react-native';
+import { Modal, View, Text, Pressable } from 'react-native';
 
 const AlertModel = ({ visible, message, onClose }) => {
   return (
@@ -7,9 +7,9 @@ const AlertModel = ({ visible, message, onClose }) => {
       <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
         <View style={{ backgroundColor: '#FFF', padding: 20, borderRadius: 10 }}>
           <Text>{message}</Text>
-          <TouchableOpacity onPress={onClose} style={{ marginTop: 10, backgroundColor: '#007AFF', padding: 10, borderRadius: 5 }}>
+          <Pressable onPress={onClose} style={{ marginTop: 10, backgroundColor: '#007AFF', padding: 10, borderRadius: 5 }}>
             <Text style={{ color: '#FFF' }}>OK</Text>
-          </TouchableOpacity>
+          </Pressable>
         </View>
       </View>
     </Modal>

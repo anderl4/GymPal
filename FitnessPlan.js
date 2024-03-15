@@ -1,12 +1,14 @@
 import React, { useState, useEffect } from 'react';
-import { View, Text, StyleSheet, ScrollView, Pressable } from 'react-native';
+import { View, Text, StyleSheet, ScrollView, Pressable, Picker} from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import { getDoc, doc } from 'firebase/firestore/lite';
-import { auth, db } from './firebase'; // Assuming your firebase.js file
+import { auth, db } from './firebase';
 
 export default function FitnessPlan() {
   const navigation = useNavigation();
   const [fitnessPlan, setFitnessPlan] = useState(null);
+  const [selectedValue, setSelectedValue] = useState('');
+  const [confirmDisabled, setConfirmDisabled] = useState(true); // State to control confirm button disabled status
 
   useEffect(() => {
     const fetchFitnessPlan = async () => {
@@ -24,14 +26,25 @@ export default function FitnessPlan() {
     fetchFitnessPlan();
   }, []);
 
+  useEffect(() => {
+    // Enable confirm button only if a value is selected
+    setConfirmDisabled(selectedValue === '');
+  }, [selectedValue]);
+
+  const handleConfirmSelection = () => {
+    console.log("Selected Value:", selectedValue);
+    navigation.navigate('WorkoutPage', { selectedValue }); 
+  };
+
   return (
     <ScrollView style={styles.container}>
-    <View style={styles.header}>
-      <Pressable style={styles.backButton} onPress={() => navigation.navigate("SecondScreen")}>
-        <Text style={styles.backButtonText}>{"<"}</Text>
-      </Pressable>
-      <Text style={styles.title}>Your Fitness Plan</Text>
-    </View>
+      <View style={styles.header}>
+        <Pressable style={styles.backButton} onPress={() => navigation.navigate("SecondScreen")}>
+          <Text style={styles.backButtonText}>{"<"}</Text>
+        </Pressable>
+        <Text style={styles.title}>Your Fitness Plan</Text>
+      </View>
+      
       {fitnessPlan ? (
         <View style={styles.content}>
           <View style={styles.contentContainer}>
@@ -64,6 +77,24 @@ export default function FitnessPlan() {
               <Text style={styles.detailLabel}>Activity Level:</Text>
               <Text style={styles.detailValue}>{fitnessPlan.activityLevel}</Text>
             </View>
+
+            <View style={styles.detailItem}>
+              <Text style={styles.detailLabel}>How would you like to train: by</Text>
+              <Picker
+                selectedValue={selectedValue}
+                style={{ height: 50, width: 150 }}
+                onValueChange={(itemValue, itemIndex) =>
+                  setSelectedValue(itemValue)
+                }>
+                <Picker.Item label="workout type" value="type" />
+                <Picker.Item label="body part" value="muscle" />
+                <Picker.Item label="difficulty" value="difficulty" />
+              </Picker>
+            </View>
+
+            <Pressable style={styles.confirmButton} onPress={handleConfirmSelection}>
+                <Text style={styles.confirmButtonText}>Confirm Selection</Text>
+            </Pressable>
           </View>
         </View>
       ) : (

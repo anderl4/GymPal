@@ -1,7 +1,7 @@
 // credit: i followed this tutorial https://www.youtube.com/watch?v=IEyUouhcuNQ for the most part
 
 import React from "react";
-import { View, StyleSheet, Animated, TouchableWithoutFeedback } from "react-native";
+import { View, StyleSheet, Animated, Pressable } from "react-native";
 import { AntDesign, FontAwesome6 } from "@expo/vector-icons";
 import { useNavigation } from '@react-navigation/native';
 
@@ -84,29 +84,29 @@ class FloatingButton extends React.Component {
 
         return (
             <View style={[styles.container, this.props.style]}>
-                <TouchableWithoutFeedback onPress={handleWorkoutAdd}>
+                <Pressable onPress={handleWorkoutAdd}>
                     <Animated.View style={[styles.button, styles.secondary, workoutStyle]}>
                         <FontAwesome6 name="weight-hanging" size={20} color="#2F80ED" />
                     </Animated.View>
-                </TouchableWithoutFeedback>
+                </Pressable>
 
-                <TouchableWithoutFeedback onPress={handleFoodAdd}>
+                <Pressable onPress={handleFoodAdd}>
                     <Animated.View style={[styles.button, styles.secondary, foodStyle]}>
                         <FontAwesome6 name="bowl-food" size={20} color="#2F80ED" />
                     </Animated.View>
-                </TouchableWithoutFeedback>
+                </Pressable>
 
-                <TouchableWithoutFeedback onPress={handleWaterAdd}>
+                <Pressable onPress={handleWaterAdd}>
                     <Animated.View style={[styles.button, styles.secondary, waterStyle]}>
                         <FontAwesome6 name="glass-water" size={20} color="#2F80ED" />
                     </Animated.View>
-                </TouchableWithoutFeedback>
+                </Pressable>
 
-                <TouchableWithoutFeedback onPress={this.toggleMenu}>
+                <Pressable onPress={this.toggleMenu}>
                     <Animated.View style={[styles.button, styles.menu, rotation]}>
                         <AntDesign name="plus" size={24} color="#FFF" />
                     </Animated.View>
-                </TouchableWithoutFeedback>
+                </Pressable>
             </View>
         )
     }
