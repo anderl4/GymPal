@@ -1,5 +1,5 @@
 import { StatusBar } from 'expo-status-bar';
-import { StyleSheet, Text, View, Image, TouchableOpacity } from 'react-native';
+import { StyleSheet, Text, View, Image, Pressable } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import { auth } from './firebase';
 import { onAuthStateChanged } from 'firebase/auth';
@@ -24,9 +24,9 @@ export default function App() {
       <Text style={styles.simplifyText}>Simplify the Path to a Healthy Life</Text>
       <Image source={require('./assets/gymbro.png')} style={styles.gymBro} />
       <View style={styles.lowerSection}>
-        <TouchableOpacity style={styles.getStartedButton} onPress={() => navigation.navigate('LoginPage')}>
+        <Pressable style={styles.getStartedButton} onPress={() => navigation.navigate('LoginPage')}>
           <Text style={styles.getStartedButtonText}>Get Started</Text>
-        </TouchableOpacity>
+        </Pressable>
       </View>
       <StatusBar style="auto" />
     </View>

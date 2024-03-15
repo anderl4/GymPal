@@ -1,8 +1,8 @@
 import React, { useState, useEffect } from 'react';
-import { View, Text, StyleSheet, ScrollView, TouchableOpacity } from 'react-native';
+import { View, Text, StyleSheet, ScrollView, Pressable } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import { getDoc, doc } from 'firebase/firestore/lite';
-import { auth, db } from './firebase';
+import { auth, db } from './firebase'; // Assuming your firebase.js file
 
 export default function FitnessPlan() {
   const navigation = useNavigation();
@@ -27,9 +27,9 @@ export default function FitnessPlan() {
   return (
     <ScrollView style={styles.container}>
     <View style={styles.header}>
-      <TouchableOpacity style={styles.backButton} onPress={() => navigation.navigate("SecondScreen")}>
+      <Pressable style={styles.backButton} onPress={() => navigation.navigate("SecondScreen")}>
         <Text style={styles.backButtonText}>{"<"}</Text>
-      </TouchableOpacity>
+      </Pressable>
       <Text style={styles.title}>Your Fitness Plan</Text>
     </View>
       {fitnessPlan ? (

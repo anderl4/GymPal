@@ -1,9 +1,8 @@
 import React from 'react';
-import { View, Text, StyleSheet, TouchableOpacity, Image, ImageBackground, TouchableWithoutFeedback } from 'react-native';
+import { View, Text, StyleSheet, Pressable, Image, ImageBackground } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import { Ionicons } from '@expo/vector-icons';
 import { auth } from './firebase';
-import FloatingButton from './FloatingButton';
 
 export default function SecondScreen() {
   const navigation = useNavigation();
@@ -43,22 +42,22 @@ export default function SecondScreen() {
           <Text style={styles.helloAnakinSubtitle}>What did you workout today?</Text>
         </View>
 
-        <TouchableOpacity style={styles.settingsIcon} onPress={() => navigation.navigate('Settings')}>
+        <Pressable style={styles.settingsIcon} onPress={() => navigation.navigate('Settings')}>
           <Ionicons name="settings-outline" size={30} />
-        </TouchableOpacity>
+        </Pressable>
 
-        <TouchableOpacity style={styles.profileIcon} onPress={handleProfilePress}>
+        <Pressable style={styles.profileIcon} onPress={handleProfilePress}>
           <Ionicons name="person-circle-outline" size={32} /> 
-        </TouchableOpacity> 
+        </Pressable> 
       </View>
 
       <View style={styles.rectangle}>
         <Text style={styles.rectangleText}>View your fitness plan today!</Text>
-        <TouchableOpacity onPress={() => navigation.navigate('FitnessPlan')}>
+        <Pressable onPress={() => navigation.navigate('FitnessPlan')}>
           <ImageBackground source={require('./assets/button.png')} style={styles.startButton} resizeMode="contain">
             <Text style={styles.startButtonText}>START</Text>
           </ImageBackground>
-        </TouchableOpacity>
+        </Pressable>
         <Image
           source={require('./assets/man.gif')}
           style={styles.weightliftingMan}
@@ -68,7 +67,7 @@ export default function SecondScreen() {
       <Text style={styles.fitnessActivitiesTitle}>My Fitness Activities</Text>
       <View style={{ flexDirection: 'row', marginLeft: 10, marginRight: 10, marginTop: 20, flexWrap: 'wrap' }}>
           {days.map((day, index) => (
-              <TouchableOpacity 
+              <Pressable 
                   key={index} 
                   style={[styles.dayRectangle, daysNum[index] === currentDate && styles.dayRectangleSelected]}
                   onPress={() => handlePress(day, daysNum[index])}
@@ -77,11 +76,11 @@ export default function SecondScreen() {
                   <View style={styles.circle}>
                       <Text style={[styles.dayTextNum, daysNum[index] === currentDate && styles.dayTextNumSelected]}>{daysNum[index]}</Text>
                   </View>
-              </TouchableOpacity>
+              </Pressable>
           ))}
       </View>
 
-      <TouchableOpacity style={styles.button} onPress={() => auth.signOut().then(function() {
+      <Pressable style={styles.button} onPress={() => auth.signOut().then(function() {
         // sign out successful
         console.log("signed out");
       })
@@ -90,10 +89,8 @@ export default function SecondScreen() {
         console.error(error);
       })}>
         <Text style={styles.buttonText}>temporary signout button</Text>
-      </TouchableOpacity>
+      </Pressable>
 
-      {/* COOL FLOATING ACTION BUTTON!! */}
-      <FloatingButton style={{ bottom: 120, right: 80}} />
     </View>
   );
 }
@@ -105,10 +102,6 @@ const styles = StyleSheet.create({
     justifyContent: 'flex-start',
     alignItems: 'center',
     paddingTop: 80,
-  },
-  buttonContainer: {
-    flex: 1,
-    alignItems: "center",
   },
   header: {
     flexDirection: 'row',

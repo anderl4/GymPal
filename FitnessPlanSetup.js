@@ -1,5 +1,5 @@
 import React , { useState } from 'react';
-import { View, Text, TextInput, StyleSheet, TouchableOpacity, ImageBackground, ScrollView, Alert} from 'react-native';
+import { View, Text, TextInput, StyleSheet, Pressable, ImageBackground, ScrollView, Alert} from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import AlertModel from './AlertModel';
 import { Picker } from '@react-native-picker/picker';
@@ -66,9 +66,9 @@ export default function FitnessPlanSetup() {
   return (
     <ScrollView style={styles.container}>
       <View style={styles.header}>
-        <TouchableOpacity style={styles.backButton} onPress={() => navigation.navigate('SecondScreen')}>
+        <Pressable style={styles.backButton} onPress={() => navigation.navigate('SecondScreen')}>
           <Text style={styles.backButtonText}>{"<"}</Text>
-        </TouchableOpacity>
+        </Pressable>
         <Text style={styles.title}>Fitness Plan</Text>
       </View>
 
@@ -130,11 +130,11 @@ export default function FitnessPlanSetup() {
       </View>
 
       <View style={styles.createButtonContainer}>
-        <TouchableOpacity onPress={handlePress}>
+        <Pressable onPress={handlePress}>
           <ImageBackground source={require('./assets/button.png')} style={styles.createButton} resizeMode="contain">
             <Text style={styles.createButtonText}>Create Plan</Text>
           </ImageBackground>
-        </TouchableOpacity>
+        </Pressable>
       </View>
 
       <View style={styles.hintTextContainer}>

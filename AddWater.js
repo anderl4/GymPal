@@ -1,5 +1,5 @@
 import React , { useState } from 'react';
-import { View, Text, TextInput, StyleSheet, TouchableOpacity, ImageBackground, ScrollView, Alert} from 'react-native';
+import { View, Text, TextInput, StyleSheet, Pressable, ImageBackground, ScrollView, Alert} from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import AlertModel from './AlertModel';
 import { setDoc, doc } from 'firebase/firestore/lite';
@@ -100,9 +100,9 @@ export default function AddWater() {
   return (
     <ScrollView style={styles.container}>
       <View style={styles.header}>
-        <TouchableOpacity style={styles.backButton} onPress={() => navigation.navigate('SecondScreen')}>
+        <Pressable style={styles.backButton} onPress={() => navigation.navigate('SecondScreen')}>
           <Text style={styles.backButtonText}>{"<"}</Text>
-        </TouchableOpacity>
+        </Pressable>
         <Text style={styles.title}>Manually Add Water</Text>
       </View>
 
@@ -126,12 +126,12 @@ export default function AddWater() {
             ></input>
         ) : (
             <View>
-            <TouchableOpacity style={styles.button} onPress={showDatePicker}>
+            <Pressable style={styles.button} onPress={showDatePicker}>
             <Text style={styles.buttonText}>Set Date</Text>
-            </TouchableOpacity>
-            <TouchableOpacity style={styles.button} onPress={showTimePicker}>
+            </Pressable>
+            <Pressable style={styles.button} onPress={showTimePicker}>
             <Text style={styles.buttonText}>Set Time</Text>
-            </TouchableOpacity>
+            </Pressable>
             <Text>selected: {date.toLocaleTimeString([], {year: 'numeric', month: 'numeric', day: 'numeric', hour: '2-digit', minute: '2-digit'})}</Text>
             {show && (
                 <DateTimePicker
@@ -147,11 +147,11 @@ export default function AddWater() {
       </View>
 
       <View style={styles.createButtonContainer}>
-        <TouchableOpacity onPress={handlePress}>
+        <Pressable onPress={handlePress}>
           <ImageBackground source={require('./assets/button.png')} style={styles.createButton} resizeMode="contain">
             <Text style={styles.createButtonText}>Submit</Text>
           </ImageBackground>
-        </TouchableOpacity>
+        </Pressable>
       </View>
       <AlertModel visible={showAlert} message={alertMessage} onClose={() => setShowAlert(false)} />
     </ScrollView>

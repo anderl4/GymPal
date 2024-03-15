@@ -1,25 +1,16 @@
 import { initializeApp } from 'firebase/app';
-import { getFirestore} from 'firebase/firestore/lite';
-import { FIREBASE_API_KEY, FIREBASE_AUTH_DOMAIN, FIREBASE_PROJECT_ID, FIREBASE_STORAGE_BUCKET, FIREBASE_MESSAGING_SENDER_ID, FIREBASE_APP_ID} from '@env';
-import ReactNativeAsyncStorage from '@react-native-async-storage/async-storage';
-import { initializeAuth, getReactNativePersistence, browserSessionPersistence } from 'firebase/auth';
-import { Platform } from 'react-native';
+import { getAuth } from 'firebase/auth';
 
 const firebaseConfig = {
-  apiKey: FIREBASE_API_KEY,
-  authDomain: FIREBASE_AUTH_DOMAIN,
-  projectId: FIREBASE_PROJECT_ID,
-  storageBucket: FIREBASE_STORAGE_BUCKET,
-  messagingSenderId: FIREBASE_MESSAGING_SENDER_ID,
-  appId: FIREBASE_APP_ID
+  apiKey: "AIzaSyDXtATQlpTER-NBw5ZKKhTuGwnzupXscfw",
+  authDomain: "gympal-48208.firebaseapp.com",
+  projectId: "gympal-48208",
+  storageBucket: "gympal-48208.appspot.com",
+  messagingSenderId: "702701744274",
+  appId: "1:702701744274:web:5a7ca7456a6159f510364b"
 };
 
 const app = initializeApp(firebaseConfig);
-const persistence = Platform.OS === 'web'
-           ? browserSessionPersistence
-           : getReactNativePersistence(ReactNativeAsyncStorage);
-const auth = initializeAuth(app, {persistence});
-const db = getFirestore(app);
+const auth = getAuth(app);
 
-export { app, auth, db };
-
+export { app, auth };

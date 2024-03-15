@@ -1,10 +1,9 @@
 import React , { useState } from 'react';
-import { View, Text, TextInput, StyleSheet, TouchableOpacity, ImageBackground, ScrollView, Alert} from 'react-native';
+import { View, Text, TextInput, StyleSheet, Pressable, ImageBackground, ScrollView, Alert} from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import AlertModel from './AlertModel';
-import { createUserWithEmailAndPassword, updateProfile, signInWithEmailAndPassword } from 'firebase/auth';
-import { setDoc, doc } from 'firebase/firestore/lite';
-import { auth, db } from './firebase';
+import { createUserWithEmailAndPassword } from 'firebase/auth';
+import { auth } from './firebase';
 
 export default function SignupPage() {
   const navigation = useNavigation();
@@ -12,44 +11,15 @@ export default function SignupPage() {
   const [showAlert, setShowAlert] = useState(false);
   const [alertMessage, setAlertMessage] = useState('');
 
+  const [firstName, setFirstName] = useState('');
+  const [lastName, setLastName] = useState('');
   const [username, setUsername] = useState('');
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
 
   const isEmptyField = () => {
-    return !username || !email || !password;
+    return !firstName || !lastName || !username || !email || !password;
   };
-
-  const register = async (username, email, password) => {
-    try {
-      await createUserWithEmailAndPassword(auth, email, password);
-      await updateProfile(auth.currentUser, { displayName: username});
-
-      // There's a bug where the displayName isn't displayed because as soon as createUserEmailAndPassword is called the user is logged in
-      // when you are logged in or out, this triggers the onAuthStateChanged, and this happens before the updateProfile could be called
-      // so a temporary solution is to sign the user out and back in
-      auth.signOut();
-      signInWithEmailAndPassword(auth, email, password);
-
-      // add data to db
-      await setDoc(doc(db, "users", auth.currentUser.uid), {
-        displayName: username,
-        fitnessPlanSetup: false,
-      }, { merge: true });
-      return true;
-    } catch (err) {
-      console.log(err)
-      return false;
-    }
-  };
-
-  const handleSignup = async () => {
-    if (await register(username, email, password)) {
-      // registeration success
-    } else {
-      // registeration failure
-    }
-  }
 
   const handlePress = () => {
     console.log('create account button pressed');
@@ -59,22 +29,48 @@ export default function SignupPage() {
       setShowAlert(true);
     } else {
       console.log('all fields filled');
-      handleSignup();
+      // TODO: save the account
+      createUserWithEmailAndPassword(auth, email, password)
+      .then((userCredential) => {
+        // Signed up
+        // TODO: we want to probably save the other information in a database or something (first name, last name, etc)
+        const user = userCredential.user;
+        navigation.navigate('SecondScreen'); // placeholder, just go to second screen for now
+      })
+      .catch((error) => {
+        // Signup fail
+        const errorCode = error.code;
+        const errorMessage = error.message;
+        console.error(errorCode + ': ' + errorMessage);
+      })
     }
   };
   
   return (
     <ScrollView style={styles.container}>
       <View style={styles.header}>
-        <TouchableOpacity style={styles.backButton} onPress={() => navigation.goBack()}>
+        <Pressable style={styles.backButton} onPress={() => navigation.goBack()}>
           <Text style={styles.backButtonText}>{"<"}</Text>
-        </TouchableOpacity>
+        </Pressable>
         <Text style={styles.title}>Create Account</Text>
       </View>
 
       <View style={styles.form}>
+        <Text style={styles.label}>First Name</Text>
+        <TextInput
+          style={styles.input}
+          value={firstName}
+          onChangeText={text => setFirstName(text)}
+        />
 
-      <Text style={styles.label}>Display Name</Text>
+      <Text style={styles.label}>Last Name</Text>
+        <TextInput
+          style={styles.input}
+          value={lastName}
+          onChangeText={text => setLastName(text)}
+        />
+
+      <Text style={styles.label}>Username</Text>
         <TextInput
           style={styles.input}
           value={username}
@@ -99,11 +95,11 @@ export default function SignupPage() {
       
 
       <View style={styles.createButtonContainer}>
-        <TouchableOpacity onPress={handlePress}>
+        <Pressable onPress={handlePress}>
           <ImageBackground source={require('./assets/button.png')} style={styles.createButton} resizeMode="contain">
             <Text style={styles.createButtonText}>Sign Up</Text>
           </ImageBackground>
-        </TouchableOpacity>
+        </Pressable>
       </View>
       <AlertModel visible={showAlert} message={alertMessage} onClose={() => setShowAlert(false)} />
     </ScrollView>

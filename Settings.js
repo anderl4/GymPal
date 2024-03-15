@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { View, Text, StyleSheet, TouchableOpacity, Switch } from 'react-native';
+import { View, Text, StyleSheet, Pressable, Switch } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 
 export default function Settings() {
@@ -11,9 +11,9 @@ export default function Settings() {
   return (
     <View style={styles.container}>
       <View style={styles.header}>
-        <TouchableOpacity style={styles.backButton} onPress={() => navigation.goBack()}>
+        <Pressable style={styles.backButton} onPress={() => navigation.goBack()}>
           <Text style={styles.backButtonText}>{"<"}</Text>
-        </TouchableOpacity>
+        </Pressable>
         <Text style={styles.title}>Settings</Text>
       </View>
 
