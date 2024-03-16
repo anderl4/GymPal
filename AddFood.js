@@ -23,10 +23,16 @@ export default function LogMeals() {
 
   const logMealToDB = async (mealDescription, date) => {
     try {
-        //idk if this is how you log it 
-      await setDoc(doc(db, "meals", auth.currentUser.uid), {
+      const dateString = date.toISOString().split('T')[0]; // YYYY-MM-DD format
+      const mealId = mealDescription.toLowerCase().replace(/\s/g, '_'); // for now mealId is just the mealDescription
+
+      const mealRef = doc(db, "users", auth.currentUser.uid, "data", "meals", dateString, mealId);
+  
+      // Add the meal data
+      await setDoc(mealRef, {
         mealDescription: mealDescription,
-        date: date.toISOString(),
+        calories: 500,
+        date: date,
       }, { merge: true });
     } catch (err) {
       console.log(err);

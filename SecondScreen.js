@@ -13,24 +13,24 @@ export default function SecondScreen() {
       const dayNames = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
       let days = [];
       let daysNum = [];
+      let dates = [];
 
       for (let i = 0; i <= 4; i++) {
           const date = new Date(currentDate);
           date.setDate(date.getDate() + i);
           days.push(dayNames[date.getDay()]);
           daysNum.push(date.getDate());
+          dates.push(new Date(date.getFullYear(), date.getMonth(), date.getDate()));
       }
 
-      return { days, daysNum };
+      return { days, daysNum, dates };
   };
 
-  const { days, daysNum } = fetchDays();
+  const { days, daysNum, dates } = fetchDays();
   const currentDate = new Date().getDate();
 
-  const handlePress = (day, date) => {
-    console.log(`${day} ${date}`); // placeholder (maybe we could have a modal popup with their recommendations for the day or something...)
-    const selectedDate = new Date(); // Start with today
-    fetchLogsForDate(selectedDate);
+  const handlePress = (date) => {
+    navigation.navigate('DayPlanner', {date});
   };
 
   const handleProfilePress = () => {
@@ -85,7 +85,7 @@ export default function SecondScreen() {
               <Pressable 
                   key={index} 
                   style={[styles.dayRectangle, daysNum[index] === currentDate && styles.dayRectangleSelected]}
-                  onPress={() => handlePress(day, daysNum[index])}
+                  onPress={() => handlePress(dates[index])}
               >
                   <Text style={[styles.dayText, daysNum[index] === currentDate && styles.dayTextSelected]}>{day}</Text>
                   <View style={styles.circle}>
