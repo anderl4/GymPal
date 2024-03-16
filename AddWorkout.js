@@ -7,6 +7,7 @@ import { auth, db } from './firebase';
 import { showMessage } from 'react-native-flash-message';
 import DateTimePicker from '@react-native-community/datetimepicker';
 import { Platform } from 'react-native';
+import { API_KEY } from '@env';
 
 export default function LogWorkouts() {
   const navigation = useNavigation();
@@ -46,6 +47,27 @@ export default function LogWorkouts() {
       setShowAlert(true);
     } else {
       logWorkoutToDB(workoutDescription, date);
+
+      fetch(`https://api.api-ninjas.com/v1/exercises?name=${workoutDescription}`, {
+        method: 'GET',
+        headers: {
+          'X-Api-Key': API_KEY
+        },
+      })
+        .then(response => {
+          if (!response.ok) {
+            throw new Error(`HTTP error! status: ${response.status}`);
+          }
+          return response.json();
+        })
+        .then(data => {
+          console.log(data);
+          // Handle the exercise data as needed
+        })
+        .catch(error => {
+          console.error('Request failed:', error);
+        });
+
       showMessage({
         message: "Workout logged successfully!",
         description: date.toLocaleTimeString([], {year: 'numeric', month: 'numeric', day: 'numeric', hour: '2-digit', minute: '2-digit'}),
@@ -113,8 +135,8 @@ export default function LogWorkouts() {
           placeholder="What workout did you do?"
         />
 
-<Text style={styles.label}>Date</Text>
-        {Platform.OS === 'web' ? (
+    <Text style={styles.label}>Date</Text>
+      {Platform.OS === 'web' ? (
             <input
             type="datetime-local"
             style={styles.input}

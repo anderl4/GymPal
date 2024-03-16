@@ -1,10 +1,10 @@
 import React, { useState, useEffect } from 'react';
-import { View, Text, StyleSheet, ScrollView, Pressable, Picker} from 'react-native';
+import { View, Text, StyleSheet, ScrollView, Pressable } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import { getDoc, doc, getDocs, collection, query } from 'firebase/firestore/lite';
 import { auth, db } from './firebase';
 
-export default function DayPlanner( {route} ) {
+export default function DayPlanner({ route }) {
   const navigation = useNavigation();
   const { date } = route.params;
 
@@ -42,7 +42,7 @@ export default function DayPlanner( {route} ) {
         id: doc.id,  // Get the meal ID
         ...doc.data(),  // Extract the mealData
       }));
-      setMeals(newMeals); 
+      setMeals(newMeals);
 
     } catch (error) {
       console.error('Error fetching data:', error);
@@ -56,63 +56,58 @@ export default function DayPlanner( {route} ) {
   }, []);
 
   return (
-    <ScrollView style={styles.container}>
-      <View style={styles.header}>
-        <Pressable style={styles.backButton} onPress={() => navigation.navigate("SecondScreen")}>
-          <Text style={styles.backButtonText}>{"<"}</Text>
-        </Pressable>
-        <Text style={styles.title}>Day Overview ({formatDate(date)})</Text>
-      </View>
-
-      {isLoading ? (
-        <Text style={styles.loadingText}>Loading...</Text>
-      ) : (
-        <View>
-          <Text style={styles.detailLabel}>
-              You've drank {waterIntake.toFixed(2)} oz of water this day!
-          </Text>
-
-          {/* Display meals */}
-          {meals.map(meal => (
-            <View key={meal.id} style={styles.detailLabel}>
-            <Text style={styles.detailLabel}>{meal.mealDescription}</Text>
-            <Text style={styles.detailLabel}>{'\t'}Calories: {meal.calories}</Text>
-            <Text style={styles.detailLabel}>{'\t'}Calories: {meal.calories}</Text>
-            <Text style={styles.detailLabel}>{'\t'}
-              {new Date(meal.date.seconds * 1000).toLocaleString('en-US', {
-                weekday: 'short',
-                month: 'short', 
-                day: 'numeric', 
-                year: 'numeric', 
-                hour: 'numeric', 
-                minute: '2-digit', 
-                hour12: true 
-              })}
-            </Text>
-            </View>
-          ))}
+    <ScrollView contentContainerStyle={styles.scrollViewContainer}>
+      <View style={styles.container}>
+        <View style={styles.header}>
+          <Pressable style={styles.backButton} onPress={() => navigation.navigate("SecondScreen")}>
+            <Text style={styles.backButtonText}>{"<"}</Text>
+          </Pressable>
+          <Text style={styles.title}>Day Overview ({formatDate(date)})</Text>
         </View>
-      )}
+
+        {isLoading ? (
+          <Text style={styles.loadingText}>Loading...</Text>
+        ) : (
+          <View>
+            <Text style={styles.detailLabel}>
+              You've drank {waterIntake.toFixed(2)} oz of water this day!
+            </Text>
+
+            {/* Display meals */}
+            {meals.map(meal => (
+              <View key={meal.id} style={styles.mealContainer}>
+                <Text style={styles.mealText}>
+                  {new Date(meal.date.seconds * 1000).toLocaleString('en-US', {
+                    hour: 'numeric',
+                    minute: '2-digit',
+                    hour12: true
+                  })}
+                </Text>
+                <Text style={styles.mealText}>{meal.mealDescription}</Text>
+                <Text style={styles.mealText}>Calories: {meal.calories}</Text>
+              </View>
+            ))}
+          </View>
+        )}
+      </View>
     </ScrollView>
   );
 }
 
 const styles = StyleSheet.create({
+  scrollViewContainer: {
+    flexGrow: 1,
+  },
   container: {
     flex: 1,
     backgroundColor: '#FFF',
+    padding: 20, // Add padding to create margins
     paddingTop: 80,
-  },
-  contentContainer: {
-    flex: 1,
-    paddingHorizontal: 50,
-    marginTop: 20,
   },
   header: {
     flexDirection: 'row',
     alignItems: 'center',
-    paddingHorizontal: 20,
-    marginTop: 20,
+    marginBottom: 20, // Add margin bottom to header
   },
   backButton: {
     marginRight: 15,
@@ -129,21 +124,30 @@ const styles = StyleSheet.create({
     fontWeight: '700',
     color: '#000',
   },
-  detailItem: {
-    flexDirection: 'row',
-    alignItems: 'center', // Vertically align label and value
-    marginBottom: 15 
+  loadingText: {
+    fontFamily: 'Poppins',
+    fontSize: 16,
+    color: '#000',
+    alignSelf: 'center',
+    marginTop: 20,
   },
   detailLabel: {
     color: '#060302',
-    fontFamily: 'Poppins', 
-    fontSize: 16, 
-    fontWeight: '500', // Maybe a bit bolder?
-    marginRight: 10 
+    fontFamily: 'Poppins',
+    fontSize: 16,
+    fontWeight: '500',
+    marginBottom: 10,
   },
-  detailValue: {
-    color: '#060302', // Or a slightly subdued color like '#70747E'
-    fontFamily: 'Poppins', 
-    fontSize: 16 
+  mealContainer: {
+    backgroundColor: '#F4F4F4',
+    borderRadius: 8,
+    padding: 15,
+    marginBottom: 10,
+  },
+  mealText: {
+    color: '#060302',
+    fontFamily: 'Poppins',
+    fontSize: 16,
+    marginBottom: 5,
   },
 });

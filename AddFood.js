@@ -113,7 +113,7 @@ export default function LogMeals() {
           placeholder="What did you eat?"
         />
 
-<Text style={styles.label}>Date</Text>
+      <Text style={styles.label}>Date</Text>
         {Platform.OS === 'web' ? (
             <input
             type="datetime-local"
