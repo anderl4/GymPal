@@ -2,7 +2,7 @@ import React , { useState } from 'react';
 import { View, Text, TextInput, StyleSheet, Pressable, ImageBackground, ScrollView, Alert} from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import AlertModel from './AlertModel';
-import { setDoc, doc } from 'firebase/firestore/lite';
+import { setDoc, doc, getDoc } from 'firebase/firestore/lite';
 import { auth, db } from './firebase';
 import { showMessage } from 'react-native-flash-message';
 import DateTimePicker from '@react-native-community/datetimepicker';
@@ -25,15 +25,16 @@ export default function AddWater() {
 
   const addWaterToDB = async (water, date) => {
     try {
-      /*await setDoc(doc(db, "users", auth.currentUser.uid), {
-        age: age,
-        gender: gender,
-        weight: weight,
-        height: height,
-        experienceLevel: experienceLevel,
-        activityLevel: activityLevel,
-        fitnessPlanSetup: true,
-      }, { merge: true });*/
+      const dateString = date.toISOString().split('T')[0]; // YYYY-MM-DD format
+
+      const waterRef = doc(db, "users", auth.currentUser.uid, "data", "hydration", dateString, "water");
+      const waterDoc = await getDoc(waterRef);
+      const existingWater = waterDoc.exists() ? waterDoc.data().oz : 0;
+
+      // Add the water data
+      await setDoc(waterRef, {
+          oz: existingWater + Number(water), // total number of oz drank that day of water
+      }, { merge: true }); 
     } catch (err) {
       console.log(err);
     }

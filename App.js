@@ -14,6 +14,7 @@ import FlashMessage from 'react-native-flash-message';
 import AddWater from './AddWater';
 import AddFood from './AddFood';
 import WorkoutPage from './WorkoutPage';
+import DayPlanner from './DayPlanner';
 
 const Stack = createNativeStackNavigator();
 SplashScreen.preventAutoHideAsync();
@@ -74,6 +75,7 @@ export default function App() {
       <Stack.Screen name="AddWater" component={AddWater} />
       <Stack.Screen name="AddFood" component={AddFood} />
       <Stack.Screen name="WorkoutPage" component={WorkoutPage} />
+      <Stack.Screen name="DayPlanner" component={DayPlanner} />
     </Stack.Navigator>
     <FlashMessage position="bottom" />
   </NavigationContainer>
