@@ -12,6 +12,7 @@ import SignupPage from './SignupPage';
 import FitnessPlan from './FitnessPlan';
 import FlashMessage from 'react-native-flash-message';
 import AddWater from './AddWater';
+import AddFood from './AddFood';
 import WorkoutPage from './WorkoutPage';
 
 const Stack = createNativeStackNavigator();
@@ -71,6 +72,7 @@ export default function App() {
       <Stack.Screen name="SignupPage" component={SignupPage} />
       <Stack.Screen name="FitnessPlan" component={FitnessPlan} />
       <Stack.Screen name="AddWater" component={AddWater} />
+      <Stack.Screen name="AddFood" component={AddFood} />
       <Stack.Screen name="WorkoutPage" component={WorkoutPage} />
     </Stack.Navigator>
     <FlashMessage position="bottom" />

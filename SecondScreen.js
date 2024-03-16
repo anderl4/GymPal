@@ -1,4 +1,4 @@
-import React from 'react';
+import { React, useState } from 'react';
 import { View, Text, StyleSheet, Pressable, Image, ImageBackground} from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import { Ionicons } from '@expo/vector-icons';
@@ -29,11 +29,15 @@ export default function SecondScreen() {
 
   const handlePress = (day, date) => {
     console.log(`${day} ${date}`); // placeholder (maybe we could have a modal popup with their recommendations for the day or something...)
+    const selectedDate = new Date(); // Start with today
+    fetchLogsForDate(selectedDate);
   };
 
   const handleProfilePress = () => {
     console.log('Profile icon pressed');
   };
+
+  const [lifestyleScore, setLifestyleScore] = useState(100); //just setting this as the default for now, we can figure out how to update this
 
   return (
     <View style={styles.container}>
@@ -51,6 +55,16 @@ export default function SecondScreen() {
           <Ionicons name="person-circle-outline" size={32} /> 
         </Pressable> 
       </View>
+
+      <View style={styles.lifestyleScoreContainer}>
+  <Text style={styles.lifestyleScoreText}>Lifestyle Score</Text>
+  <View style={styles.progressBarContainer}>
+    <View style={styles.progressBarBackground}>
+      <View style={[styles.progressBarFill, {width: `${lifestyleScore}%`}]} />
+    </View>
+    <Text style={styles.lifestyleScorePercentage}>{lifestyleScore}%</Text>
+  </View>
+</View>
 
       <View style={styles.rectangle}>
         <Text style={styles.rectangleText}>View your fitness plan today!</Text>
@@ -218,7 +232,7 @@ const styles = StyleSheet.create({
     alignSelf: 'flex-start',
     marginLeft: 20, 
     marginTop: 75,
-    marginBottom: 10,
+    marginBottom: -5,
   },
   
   dayRectangleContainer: {
@@ -294,5 +308,43 @@ const styles = StyleSheet.create({
     color: 'white',
     fontWeight: 'bold',
     fontFamily: 'Montserrat-Bold',
+  },
+  lifestyleScoreContainer: {
+    alignSelf: 'flex-start',
+    width: '90%',
+    marginTop: 30,
+    marginBottom: 20,
+    marginLeft: 20,
+  },
+  lifestyleScoreText: {
+    fontSize: 20,
+    marginTop: -7,
+    marginBottom: 10,
+    color: '#060302',
+    fontFamily: 'Poppins',
+    fontWeight: '600',
+  },
+  progressBarContainer: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'space-between',
+    width: '100%',
+  },
+  progressBarBackground: {
+    height: 20,
+    flex: 1,
+    backgroundColor: '#e0e0e0',
+    borderRadius: 10,
+    marginRight:10,
+  },
+  progressBarFill: {
+    height: '100%',
+    backgroundColor: '#2F80ED', 
+    borderRadius: 10,
+  },
+  lifestyleScorePercentage: {
+    color: '#2F80ED',
+    fontFamily: 'Poppins',
+    fontSize: 16,
   },
 });

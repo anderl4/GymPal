@@ -1,5 +1,5 @@
 import React , { useState } from 'react';
-import { View, Text, TextInput, StyleSheet, Pressable, ImageBackground, ScrollView, Alert} from 'react-native';
+import { View,   Platform, KeyboardAvoidingView, Text, TextInput, StyleSheet, Pressable, ImageBackground, ScrollView, Alert} from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import AlertModel from './AlertModel';
 import { Picker } from '@react-native-picker/picker';
@@ -63,8 +63,10 @@ export default function FitnessPlanSetup() {
   const levels = ['Beginner', 'Intermediate', 'Expert'];
   const activityLevels = ['1-2 times a week', '2-3 times per week', '3-4 times per week', '4-5 times per week', '5-6 times per week'];
   
+  //fixed glitch of create plan being not visible using keyboardavoidingview and styling
   return (
-    <ScrollView style={styles.container}>
+    <KeyboardAvoidingView style={{ flex: 1 }} behavior={Platform.OS === "ios" ? "padding" : undefined} keyboardVerticalOffset={Platform.OS === "ios" ? 60 : 0}> 
+    <ScrollView style={{ flex: 1 }} contentContainerStyle={{ paddingTop: 60, paddingBottom: 100 }}> 
       <View style={styles.header}>
         <Pressable style={styles.backButton} onPress={() => navigation.navigate('SecondScreen')}>
           <Text style={styles.backButtonText}>{"<"}</Text>
@@ -143,6 +145,7 @@ export default function FitnessPlanSetup() {
 
       <AlertModel visible={showAlert} message={alertMessage} onClose={() => setShowAlert(false)} />
     </ScrollView>
+    </KeyboardAvoidingView>
   );
 }
 
