@@ -136,6 +136,8 @@ const styles = StyleSheet.create({
     borderRadius: 10,
     padding: 10,
     marginBottom: 10,
+    borderWidth: 1,
+    borderColor: '#ccc', // Optional: Add border color for a cleaner look
   },
   exerciseTitle: {
     fontSize: 18,
