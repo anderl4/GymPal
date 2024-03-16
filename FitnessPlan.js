@@ -7,7 +7,7 @@ import { auth, db } from './firebase';
 export default function FitnessPlan() {
   const navigation = useNavigation();
   const [fitnessPlan, setFitnessPlan] = useState(null);
-  const [selectedValue, setSelectedValue] = useState('');
+  const [selectedValue, setSelectedValue] = useState('type');
   const [confirmDisabled, setConfirmDisabled] = useState(true); // State to control confirm button disabled status
 
   useEffect(() => {
@@ -44,7 +44,7 @@ export default function FitnessPlan() {
         </Pressable>
         <Text style={styles.title}>Your Fitness Plan</Text>
       </View>
-      
+
       {fitnessPlan ? (
         <View style={styles.content}>
           <View style={styles.contentContainer}>
