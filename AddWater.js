@@ -62,7 +62,7 @@ export default function AddWater() {
   function handleDateChange(ev) {
     if (!ev.target['validity'].valid) return;
     const dt = ev.target['value'] + ':00Z';
-    setDate(dt);
+    setDate(new Date(dt));
   }
 
   function formatDate() {
