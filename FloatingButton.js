@@ -71,6 +71,7 @@ class FloatingButton extends React.Component {
 
         handleWorkoutAdd = () => {
             console.log("Workout add button pressed");
+            this.props.navigation.navigate('AddWorkout');
         }
     
         handleFoodAdd = () => {
