@@ -1,11 +1,12 @@
-import React, { useState } from 'react';
-import { View, Text, TextInput, StyleSheet, Pressable, ImageBackground, ScrollView } from 'react-native';
+import React , { useState } from 'react';
+import { View, Text, TextInput, StyleSheet, Pressable, ImageBackground, ScrollView, Alert} from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import AlertModel from './AlertModel';
-import { setDoc, doc } from 'firebase/firestore/lite';
+import { setDoc, doc, getDoc } from 'firebase/firestore/lite';
 import { auth, db } from './firebase';
 import { showMessage } from 'react-native-flash-message';
 import DateTimePicker from '@react-native-community/datetimepicker';
+import { Platform } from 'react-native';
 
 export default function LogWorkouts() {
   const navigation = useNavigation();
