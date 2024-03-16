@@ -55,6 +55,26 @@ export default function LogMeals() {
     }
   };
 
+  function handleDateChange(ev) {
+    if (!ev.target['validity'].valid) return;
+    const dt = ev.target['value'] + ':00Z';
+    setDate(new Date(dt));
+  }
+
+  function formatDate() {
+    if (!(date instanceof Date)) {
+      return null;
+    }
+  
+    const year = date.getFullYear();
+    const month = (date.getMonth() + 1).toString().padStart(2, '0');
+    const day = date.getDate().toString().padStart(2, '0');
+    const hours = date.getHours().toString().padStart(2, '0');
+    const minutes = date.getMinutes().toString().padStart(2, '0');
+  
+    return `${year}-${month}-${day}T${hours}:${minutes}`; 
+  }
+
   const onChange = (event, selectedDate) => {
     const currentDate = selectedDate || date;
     setShow(false);
@@ -92,26 +112,34 @@ export default function LogMeals() {
           placeholder="What did you eat?"
         />
 
-        <Text style={styles.label}>Date & Time</Text>
-        <View>
-          <Pressable style={styles.button} onPress={showDatePicker}>
+<Text style={styles.label}>Date</Text>
+        {Platform.OS === 'web' ? (
+            <input
+            type="datetime-local"
+            style={styles.input}
+            defaultValue={formatDate()}
+            onChange={handleDateChange}
+            ></input>
+        ) : (
+            <View>
+            <Pressable style={styles.button} onPress={showDatePicker}>
             <Text style={styles.buttonText}>Set Date</Text>
-          </Pressable>
-          <Pressable style={styles.button} onPress={showTimePicker}>
+            </Pressable>
+            <Pressable style={styles.button} onPress={showTimePicker}>
             <Text style={styles.buttonText}>Set Time</Text>
-          </Pressable>
-          <Text>Selected: {date.toLocaleTimeString([], {year: 'numeric', month: 'numeric', day: 'numeric', hour: '2-digit', minute: '2-digit'})}</Text>
-          {show && (
-            <DateTimePicker
-              testID="dateTimePicker"
-              value={date}
-              mode={mode}
-              is24Hour={true}
-              display="default"
-              onChange={onChange}
-            />
-          )}
-        </View>
+            </Pressable>
+            <Text>selected: {date.toLocaleTimeString([], {year: 'numeric', month: 'numeric', day: 'numeric', hour: '2-digit', minute: '2-digit'})}</Text>
+            {show && (
+                <DateTimePicker
+                testID="dateTimePicker"
+                value={date}
+                mode={mode}
+                is24Hour={true}
+                onChange={onChange}
+                />
+            )}
+            </View>
+        )}
       </View>
 
       <View style={styles.createButtonContainer}>
