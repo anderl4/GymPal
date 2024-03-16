@@ -7,6 +7,7 @@ import { auth, db } from './firebase';
 import { showMessage } from 'react-native-flash-message';
 import DateTimePicker from '@react-native-community/datetimepicker';
 import { Platform } from 'react-native';
+import { API_KEY } from '@env';
 
 export default function LogMeals() {
   const navigation = useNavigation();
@@ -45,7 +46,30 @@ export default function LogMeals() {
       setAlertMessage('Please fill in all fields.');
       setShowAlert(true);
     } else {
-      logMealToDB(mealDescription, date);
+      fetch(`https://api.api-ninjas.com/v1/nutrition?query=${mealDescription}`, {
+        method: 'GET',
+        headers: {
+          'X-Api-Key': API_KEY
+        },
+      })
+        .then(response => {
+          if (!response.ok) {
+            throw new Error(`HTTP error! status: ${response.status}`);
+          }
+          return response.json();
+        })
+        .then(data => {
+          console.log(data[0]);
+          
+          const mealName = data[0]['name']
+          const calories = data[0]['calories']
+
+          logMealToDB(mealName, date);
+        })
+        .catch(error => {
+          console.error('Request failed:', error);
+        });
+
       showMessage({
         message: "Meal logged successfully!",
         description: date.toLocaleTimeString([], {year: 'numeric', month: 'numeric', day: 'numeric', hour: '2-digit', minute: '2-digit'}),

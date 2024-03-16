@@ -9,6 +9,7 @@ import DateTimePicker from '@react-native-community/datetimepicker';
 import { Platform } from 'react-native';
 import { API_KEY } from '@env';
 
+
 export default function LogWorkouts() {
   const navigation = useNavigation();
 
@@ -46,8 +47,6 @@ export default function LogWorkouts() {
       setAlertMessage('Please fill in all fields.');
       setShowAlert(true);
     } else {
-      logWorkoutToDB(workoutDescription, date);
-
       fetch(`https://api.api-ninjas.com/v1/exercises?name=${workoutDescription}`, {
         method: 'GET',
         headers: {
@@ -61,8 +60,14 @@ export default function LogWorkouts() {
           return response.json();
         })
         .then(data => {
-          console.log(data);
-          // Handle the exercise data as needed
+          console.log(data[0]);
+          
+          const workoutName = data[0]['name']
+          const workoutType = data[0]['type']
+          const workoutMuscle = data[0]['muscle']
+          const workoutDifficulty = data[0]['difficulty']
+
+          logWorkoutToDB(workoutName, date);
         })
         .catch(error => {
           console.error('Request failed:', error);
