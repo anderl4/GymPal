@@ -18,32 +18,30 @@ export default function LogMeals() {
   const [date, setDate] = useState(new Date());
   const [mode, setMode] = useState('date');
   const [show, setShow] = useState(false);
-
   const isEmptyField = () => {
     return !mealDescription || !date;
   };
-
-  const logMealToDB = async (mealDescription, date) => {
-    try {
-      const year = date.getFullYear();
-      const month = ('0' + (date.getMonth() + 1)).slice(-2);
-      const day = ('0' + date.getDate()).slice(-2);
-      const dateString = year + '-' + month + '-' + day; // YYYY-MM-DD format
-      
-      const mealId = mealDescription.toLowerCase().replace(/\s/g, '_'); // for now mealId is just the mealDescription
-
-      const mealRef = doc(db, "users", auth.currentUser.uid, "data", "meals", dateString, mealId);
-  
-      // Add the meal data
-      await setDoc(mealRef, {
-        mealDescription: mealDescription,
-        calories: 500,
-        date: date,
-      }, { merge: true });
-    } catch (err) {
-      console.log(err);
+  const logMealToDB = async (mealDescription, calories, date) => {
+    //check
+    if (!date) {
+        console.error("No date provided for logging meal.");
+        return;
     }
-  }
+    try {
+        const year = date.getFullYear();
+        const month = ('0' + (date.getMonth() + 1)).slice(-2);
+        const day = ('0' + date.getDate()).slice(-2);
+        const dateString = `${year}-${month}-${day}`;
+        const mealRef = doc(db, "users", auth.currentUser.uid, "data", "meals", dateString, mealDescription);
+        await setDoc(mealRef, {
+            calories,
+            timestamp: date.toISOString()
+        }, { merge: true });
+        console.log("Meal logged successfully!");
+    } catch (err) {
+        console.error("Error logging meal: ", err);
+    }
+};
 
   const handlePress = () => {
     if (isEmptyField()) {
@@ -53,7 +51,7 @@ export default function LogMeals() {
       fetch(`https://api.api-ninjas.com/v1/nutrition?query=${mealDescription}`, {
         method: 'GET',
         headers: {
-          'X-Api-Key': API_KEY
+          'X-Api-Key': API_KEY="WDp5udFUltOi8korMx6WAw==IY0HARH2Z7ssPzIV"
         },
       })
         .then(response => {
@@ -67,8 +65,8 @@ export default function LogMeals() {
           
           const mealName = data[0]['name']
           const calories = data[0]['calories']
-
-          logMealToDB(mealName, date);
+          console.log('Logging meal with date:', date);
+          logMealToDB(mealName, calories, date);
         })
         .catch(error => {
           console.error('Request failed:', error);
@@ -106,9 +104,9 @@ export default function LogMeals() {
 
   const onChange = (event, selectedDate) => {
     const currentDate = selectedDate || date;
-    setShow(false);
     setDate(currentDate);
   };
+  
 
   const showMode = (currentMode) => {
     setShow(true);
