@@ -25,7 +25,11 @@ export default function LogMeals() {
 
   const logMealToDB = async (mealDescription, date) => {
     try {
-      const dateString = date.toISOString().split('T')[0]; // YYYY-MM-DD format
+      const year = date.getFullYear();
+      const month = ('0' + (date.getMonth() + 1)).slice(-2);
+      const day = ('0' + date.getDate()).slice(-2);
+      const dateString = year + '-' + month + '-' + day; // YYYY-MM-DD format
+      
       const mealId = mealDescription.toLowerCase().replace(/\s/g, '_'); // for now mealId is just the mealDescription
 
       const mealRef = doc(db, "users", auth.currentUser.uid, "data", "meals", dateString, mealId);

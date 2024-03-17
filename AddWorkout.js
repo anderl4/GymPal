@@ -26,7 +26,11 @@ export default function LogWorkouts() {
 
   const logWorkoutToDB = async (workoutDescription, date) => {
     try {
-      const dateString = date.toISOString().split('T')[0]; // YYYY-MM-DD format
+      const year = date.getFullYear();
+      const month = ('0' + (date.getMonth() + 1)).slice(-2);
+      const day = ('0' + date.getDate()).slice(-2);
+      const dateString = year + '-' + month + '-' + day; // YYYY-MM-DD format
+      
       const workoutId = workoutDescription.toLowerCase().replace(/\s/g, '_'); // for now workoutId is just the workoutDescription
 
       const workoutRef = doc(db, "users", auth.currentUser.uid, "data", "workouts", dateString, workoutId);

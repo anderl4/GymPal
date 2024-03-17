@@ -25,7 +25,10 @@ export default function AddWater() {
 
   const addWaterToDB = async (water, date) => {
     try {
-      const dateString = date.toISOString().split('T')[0]; // YYYY-MM-DD format
+      const year = date.getFullYear();
+      const month = ('0' + (date.getMonth() + 1)).slice(-2);
+      const day = ('0' + date.getDate()).slice(-2);
+      const dateString = year + '-' + month + '-' + day; // YYYY-MM-DD format
 
       const waterRef = doc(db, "users", auth.currentUser.uid, "data", "hydration", dateString, "water");
       const waterDoc = await getDoc(waterRef);
