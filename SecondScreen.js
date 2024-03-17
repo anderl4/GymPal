@@ -1,12 +1,49 @@
-import { React, useState } from 'react';
+import { React, useState, useEffect } from 'react';
 import { View, Text, StyleSheet, Pressable, Image, ImageBackground} from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import { Ionicons } from '@expo/vector-icons';
-import { auth } from './firebase';
+import { auth, db } from './firebase';
+import { getDoc, doc, getDocs, collection, query } from 'firebase/firestore/lite';
 import FloatingButton from './FloatingButton';
 
 export default function SecondScreen() {
   const navigation = useNavigation();
+
+  const [waterIntake, setWaterIntake] = useState(null);
+  const [meals, setMeals] = useState([]);
+  const [lifestyleScore, setLifestyleScore] = useState(0);
+
+  const fetchUserData = async () => {
+    try {
+      const currentDate = new Date();
+      const dateString = currentDate.toISOString().split('T')[0]; // YYYY-MM-DD format
+      console.log(dateString)
+
+      // Fetch water data
+      const waterRef = doc(db, "users", auth.currentUser.uid, "data", "hydration", dateString, "water");
+      const waterDoc = await getDoc(waterRef);
+
+      if (waterDoc.exists()) {
+        setWaterIntake(waterDoc.data().oz);
+      } else {
+        setWaterIntake(0);
+      }
+
+      // Fetch meal data
+      const mealsRef = collection(db, "users", auth.currentUser.uid, "data", "meals", dateString);
+      const mealsQuery = query(mealsRef);
+      const mealsSnapshot = await getDocs(mealsQuery);
+
+      const newMeals = mealsSnapshot.docs.map(doc => ({
+        id: doc.id,  // Get the meal ID
+        ...doc.data(),  // Extract the mealData
+      }));
+      setMeals(newMeals);
+
+    } catch (error) {
+      console.error('Error fetching data:', error);
+    }
+  };
 
   const fetchDays = () => {
       const currentDate = new Date();
@@ -37,7 +74,40 @@ export default function SecondScreen() {
     console.log('Profile icon pressed');
   };
 
-  const [lifestyleScore, setLifestyleScore] = useState(100); //just setting this as the default for now, we can figure out how to update this
+  useEffect(() => {
+    fetchUserData();
+  }, []);
+
+  const calculateLifestyleScore = (waterIntake, meals) => {
+    console.log("Water Intake:", waterIntake);
+    console.log("Meals:", meals);
+  
+    let waterDrank = Math.min(1, waterIntake / 88);
+    let totalCalories = 0;
+    let calorieGoal = 2250;
+  
+    meals.forEach((meal) => {
+      totalCalories += meal.calories;
+    });
+  
+    let calorieProgress = Math.min(1, totalCalories / calorieGoal);
+
+    let exercise = 1;
+
+    // weightings
+    let weightedWater = waterDrank * 0.4;
+    let weightedCalories = calorieProgress * 0.4;
+    let weightedExercise = exercise * 0.2;
+
+    return (weightedWater + weightedCalories + weightedExercise) * 100;
+};
+
+  useEffect(() => {
+    const lifestyleScore = calculateLifestyleScore(waterIntake, meals);
+    // Update lifestyle score in state
+    setLifestyleScore(lifestyleScore);
+  }, [waterIntake, meals]);
+  
 
   return (
     <View style={styles.container}>
@@ -57,15 +127,14 @@ export default function SecondScreen() {
       </View>
 
       <View style={styles.lifestyleScoreContainer}>
-  <Text style={styles.lifestyleScoreText}>Lifestyle Score</Text>
-  <View style={styles.progressBarContainer}>
-    <View style={styles.progressBarBackground}>
-      <View style={[styles.progressBarFill, {width: `${lifestyleScore}%`}]} />
-    </View>
-    <Text style={styles.lifestyleScorePercentage}>{lifestyleScore}%</Text>
-  </View>
-</View>
-
+        <Text style={styles.lifestyleScoreText}>Lifestyle Score</Text>
+        <View style={styles.progressBarContainer}>
+          <View style={styles.progressBarBackground}>
+            <View style={[styles.progressBarFill, {width: `${lifestyleScore}%`}]} />
+          </View>
+          <Text style={styles.lifestyleScorePercentage}>{lifestyleScore.toFixed(2)}%</Text>
+        </View>
+      </View>
       <View style={styles.rectangle}>
         <Text style={styles.rectangleText}>View your fitness plan today!</Text>
         <Pressable onPress={() => navigation.navigate('FitnessPlan')}>
