@@ -52,7 +52,7 @@ export default function LogWorkouts() {
       fetch(`https://api.api-ninjas.com/v1/exercises?name=${workoutDescription}`, {
         method: 'GET',
         headers: {
-          'X-Api-Key': API_KEY="WDp5udFUltOi8korMx6WAw==IY0HARH2Z7ssPzIV"
+          'X-Api-Key': API_KEY
         },
       })
         .then(response => {
