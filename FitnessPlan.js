@@ -36,6 +36,10 @@ export default function FitnessPlan() {
     navigation.navigate('WorkoutPage', { selectedValue }); 
   };
 
+  const handleConfirmSelectionFood = () => {
+    navigation.navigate('FoodPage'); 
+  };
+
   return (
     <ScrollView style={styles.container}>
       <View style={styles.header}>
@@ -93,7 +97,10 @@ export default function FitnessPlan() {
             </View>
 
             <Pressable style={styles.confirmButton} onPress={handleConfirmSelection}>
-                <Text style={styles.confirmButtonText}>Confirm Selection</Text>
+                <Text style={styles.confirmButtonText}>View Workouts</Text>
+            </Pressable>
+            <Pressable style={[styles.confirmButton, {backgroundColor:"#FF715B"}]} onPress={handleConfirmSelectionFood}>
+                <Text style={styles.confirmButtonText}>View Food and Recipes</Text>
             </Pressable>
           </View>
         </View>

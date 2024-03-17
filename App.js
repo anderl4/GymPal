@@ -17,6 +17,7 @@ import AddWorkout from './AddWorkout';
 import WorkoutPage from './WorkoutPage';
 import DayPlanner from './DayPlanner';
 import ProfilePage from './ProfilePage';
+import FoodPage from './FoodPage';
 
 const Stack = createNativeStackNavigator();
 SplashScreen.preventAutoHideAsync();
@@ -80,6 +81,7 @@ export default function App() {
       <Stack.Screen name="WorkoutPage" component={WorkoutPage} />
       <Stack.Screen name="DayPlanner" component={DayPlanner} />
       <Stack.Screen name="ProfilePage" component={ProfilePage} />
+      <Stack.Screen name="FoodPage" component={FoodPage} />
     </Stack.Navigator>
     <FlashMessage position="bottom" />
   </NavigationContainer>

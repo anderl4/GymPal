@@ -82,8 +82,6 @@ export default function WorkoutPage({ route }) {
   };
 
   const handleAddToDatabase = (exercise) => {
-    // You might need parts from the 'logWorkoutToDB' function here,
-    // especially constructing the workoutRef
     const workoutDescription = exercise.name; 
     const muscle = exercise.muscle;
     const type = exercise.type;
