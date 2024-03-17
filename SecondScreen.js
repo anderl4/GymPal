@@ -100,6 +100,8 @@ export default function SecondScreen() {
     fetchUserData();
   }, []);
 
+
+
   function calculateCalorieGoal(userData) {
     if (!userData) {
       console.error('User data is null');
@@ -147,7 +149,7 @@ export default function SecondScreen() {
     console.log("Water Intake:", waterIntake);
     console.log("Meals:", meals);
 
-    let waterDrank = Math.min(1, waterIntake / 88);
+    let waterDrank = Math.min(1, waterIntake / (weight * 1.01442));
     let totalCalories = 0;
     let calorieGoal = calculateCalorieGoal(userData);
   
