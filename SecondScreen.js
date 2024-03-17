@@ -149,7 +149,7 @@ export default function SecondScreen() {
     console.log("Water Intake:", waterIntake);
     console.log("Meals:", meals);
 
-    let waterDrank = Math.min(1, waterIntake / (weight * 1.01442));
+    let waterDrank = Math.min(1, waterIntake / (userData.weight * 1.01442));
     let totalCalories = 0;
     let calorieGoal = calculateCalorieGoal(userData);
   
