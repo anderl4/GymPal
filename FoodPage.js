@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { View, Text, StyleSheet, Picker, ScrollView, Pressable, TouchableOpacity, TextInput } from 'react-native';
+import { View, Text, StyleSheet, Picker, ScrollView, Pressable, TouchableOpacity, TextInput, Button } from 'react-native';
 import { API_KEY } from '@env';
 import { useNavigation } from '@react-navigation/native';
 import { AntDesign } from "@expo/vector-icons";
@@ -124,6 +124,11 @@ export default function FoodPage() {
                 onPress={() => handleAddToDatabase(food)}> 
                 <AntDesign name="plus" size={24} color="#FFF" />
                 </TouchableOpacity>
+
+                <Button 
+                  title="View Recipes" 
+                  onPress={() => navigation.navigate('RecipePage', { foodQuery: food.name })} 
+                />
             </View>
             ))}
         </View>
