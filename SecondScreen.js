@@ -13,6 +13,8 @@ export default function SecondScreen() {
   const [waterIntake, setWaterIntake] = useState(null);
   const [meals, setMeals] = useState([]);
   const [lifestyleScore, setLifestyleScore] = useState(0);
+  const [workouts, setWorkouts] = useState([]);
+
 
   const fetchUserData = async () => {
     console.log("Getting user info")
@@ -49,6 +51,16 @@ export default function SecondScreen() {
         ...doc.data(),  // Extract the mealData
       }));
       setMeals(newMeals);
+
+      const workoutsRef = collection(db, "users", auth.currentUser.uid, "data", "workouts", dateString);
+      const workoutsQuery = query(workoutsRef);
+      const workoutsSnapshot = await getDocs(workoutsQuery);
+
+      const newWorkouts = workoutsSnapshot.docs.map(doc => ({
+        id: doc.id, 
+        ...doc.data(),
+      }));
+      setWorkouts(newWorkouts);
 
     } catch (error) {
       console.error('Error fetching data:', error);
@@ -145,7 +157,10 @@ export default function SecondScreen() {
   
     let calorieProgress = Math.min(1, totalCalories / calorieGoal);
 
-    let exercise = 1;
+    let exercise = 0;
+    if (workouts[0]) {
+      exercise = 1;
+    }
 
     // weightings
     let weightedWater = waterDrank * 0.4;
