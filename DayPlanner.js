@@ -98,11 +98,11 @@ export default function DayPlanner({ route }) {
               meals.map(meal => (
                   <View key={meal.id} style={styles.mealContainer}>
                       <TouchableOpacity onPress={() => toggleExpand(meal.id)}>
-                        <Text style={styles.mealDetailLabel}>Description: </Text>
+                        <Text>Description: </Text>
                         <Text style={styles.mealText}>{meal.mealDescription}</Text>
-                        <Text style={styles.mealDetailLabel}>Calories: </Text>
+                        <Text>Calories: </Text>
                         <Text style={styles.mealText}>{meal.calories}</Text>
-                        <Text style={styles.mealDetailLabel}>Time: </Text>
+                        <Text>Time: </Text>
                         <Text style={styles.mealText}>
                             {new Date(meal.timestamp).toLocaleTimeString([], {
                                 hour: '2-digit',
@@ -112,15 +112,15 @@ export default function DayPlanner({ route }) {
                       </TouchableOpacity>
 
                       <Collapsible collapsed={!expandedIds.includes(meal.id)}> 
-                        <Text style={styles.mealDetailLabel}>Servings: </Text>
+                        <Text>Servings: </Text>
                         <Text style={styles.mealText}>{meal.servings}</Text>
-                        <Text style={styles.mealDetailLabel}>Carbs: </Text>
+                        <Text>Carbs: </Text>
                         <Text style={styles.mealText}>{meal.carbs} g</Text>
-                        <Text style={styles.mealDetailLabel}>Fat: </Text>
+                        <Text>Fat: </Text>
                         <Text style={styles.mealText}>{meal.fat} g</Text>
-                        <Text style={styles.mealDetailLabel}>Protein: </Text>
+                        <Text>Protein: </Text>
                         <Text style={styles.mealText}>{meal.protein} g</Text>
-                        <Text style={styles.mealDetailLabel}>Sodium: </Text>
+                        <Text>Sodium: </Text>
                         <Text style={styles.mealText}>{meal.sodium} mg</Text>
                       </Collapsible>
                   </View>
@@ -133,7 +133,17 @@ export default function DayPlanner({ route }) {
             {workouts.length > 0 ? (
               workouts.map(workout => (
                 <View key={workout.id} style={styles.workoutContainer}>
+                  <Text>Description: </Text>
                   <Text style={styles.workoutText}>{workout.workoutDescription}</Text>
+                  <Text>Type: </Text>
+                  <Text style={styles.workoutText}>{workout.type}/{workout.muscle}</Text>
+                  <Text>Time: </Text>
+                  <Text style={styles.mealText}>
+                      {new Date(workout.timestamp).toLocaleTimeString([], {
+                          hour: '2-digit',
+                          minute: '2-digit' 
+                      })}
+                  </Text>
                 </View>
               ))
             ) : (
@@ -210,9 +220,10 @@ const styles = StyleSheet.create({
     marginBottom: 10,
   },
   workoutContainer: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    marginBottom: 5,
+    backgroundColor: '#F4F4F4',
+    borderRadius: 8,
+    padding: 15,
+    marginBottom: 10,
   },
   workoutText: {
     color: '#060302',

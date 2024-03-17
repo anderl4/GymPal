@@ -33,7 +33,8 @@ export default function LogMeals() {
         const month = ('0' + (date.getMonth() + 1)).slice(-2);
         const day = ('0' + date.getDate()).slice(-2);
         const dateString = `${year}-${month}-${day}`;
-        const mealRef = doc(db, "users", auth.currentUser.uid, "data", "meals", dateString, mealDescription);
+        const mealId = `${mealDescription}_${date.getTime()}`;
+        const mealRef = doc(db, "users", auth.currentUser.uid, "data", "meals", dateString, mealId);
         await setDoc(mealRef, {
             calories,
             servings: servingAmount,
