@@ -9,11 +9,13 @@ import FloatingButton from './FloatingButton';
 export default function SecondScreen() {
   const navigation = useNavigation();
 
+  const [userData, setUserData] = useState(null);
   const [waterIntake, setWaterIntake] = useState(null);
   const [meals, setMeals] = useState([]);
   const [lifestyleScore, setLifestyleScore] = useState(0);
 
   const fetchUserData = async () => {
+    console.log("Getting user info")
     try {
       const currentDate = new Date();
       const dateString = currentDate.toISOString().split('T')[0]; // YYYY-MM-DD format
@@ -22,8 +24,7 @@ export default function SecondScreen() {
       // get user data
       const docSnap = await getDoc(doc(db, "users", auth.currentUser.uid));
       if (docSnap.exists()) {
-        const userData = docSnap.data();
-        const { age, gender, weight, height, experienceLevel, activityLevel, fitnessPlanSetup } = userData;
+        setUserData(docSnap.data())
       } else {
         console.log("No such document!");
       }
@@ -88,20 +89,25 @@ export default function SecondScreen() {
   }, []);
 
   function calculateCalorieGoal(userData) {
+    if (!userData) {
+      console.error('User data is null');
+      return 1; // Or any default value that makes sense in your application
+    }
+
     // Extract data from userData object
     const { age, gender, weight, height, activityLevel } = userData;
 
     // Calculate BMR based on gender
     let bmr;
     if (gender === 'male') {
-      bmr = (10 * weightInKg) + (6.25 * heightInCm) - (5 * age) + maleConstant;
+      bmr = (10 * weight) + (6.25 * height) - (5 * age) + 5;
     } else if (gender === 'female') {
-      bmr = (10 * weightInKg) + (6.25 * heightInCm) - (5 * age) + femaleConstant;
+      bmr = (10 * weight) + (6.25 * height) - (5 * age) - 161;
     }
 
     // Adjust BMR based on activity level
     let activityFactor;
-    switch (activityLevel.toLowerCase()) {
+    switch (activityLevel) {
         case '1-2 times a week':
             activityFactor = 1.2;
             break;
