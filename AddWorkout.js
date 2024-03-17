@@ -29,22 +29,20 @@ export default function LogWorkouts() {
       const year = date.getFullYear();
       const month = ('0' + (date.getMonth() + 1)).slice(-2);
       const day = ('0' + date.getDate()).slice(-2);
-      const dateString = year + '-' + month + '-' + day; // YYYY-MM-DD format
-      
-      const workoutId = workoutDescription.toLowerCase().replace(/\s/g, '_'); // for now workoutId is just the workoutDescription
-
+      const dateString = `${year}-${month}-${day}`;
+      const workoutId = `workout_${date.getTime()}`;
       const workoutRef = doc(db, "users", auth.currentUser.uid, "data", "workouts", dateString, workoutId);
-  
-      // Add the workout data
       await setDoc(workoutRef, {
-        workoutDescription: workoutDescription,
-        duration: 60, // Placeholder duration in minutes
-        date: date,
+        workoutDescription,
+        timestamp: date.toISOString() 
       }, { merge: true });
+  
+      console.log("Workout logged successfully!");
     } catch (err) {
-      console.log(err);
+      console.error("Error logging workout: ", err);
     }
-  }
+  };
+  
 
   const handlePress = () => {
     if (isEmptyField()) {
@@ -54,7 +52,7 @@ export default function LogWorkouts() {
       fetch(`https://api.api-ninjas.com/v1/exercises?name=${workoutDescription}`, {
         method: 'GET',
         headers: {
-          'X-Api-Key': API_KEY
+          'X-Api-Key': API_KEY="WDp5udFUltOi8korMx6WAw==IY0HARH2Z7ssPzIV"
         },
       })
         .then(response => {
@@ -65,13 +63,9 @@ export default function LogWorkouts() {
         })
         .then(data => {
           console.log(data[0]);
-          
-          const workoutName = data[0]['name']
-          const workoutType = data[0]['type']
-          const workoutMuscle = data[0]['muscle']
-          const workoutDifficulty = data[0]['difficulty']
 
-          logWorkoutToDB(workoutName, date);
+          console.log('Logging workout with date:', date);
+          logWorkoutToDB(workoutDescription, date);
         })
         .catch(error => {
           console.error('Request failed:', error);
@@ -81,7 +75,6 @@ export default function LogWorkouts() {
         message: "Workout logged successfully!",
         description: date.toLocaleTimeString([], {year: 'numeric', month: 'numeric', day: 'numeric', hour: '2-digit', minute: '2-digit'}),
         type: "success",
-        duration: 3000,
       });
       navigation.goBack(); // or navigate to a specific screen
     }
@@ -109,7 +102,6 @@ export default function LogWorkouts() {
 
   const onChange = (event, selectedDate) => {
     const currentDate = selectedDate || date;
-    setShow(false);
     setDate(currentDate);
   };
 
