@@ -65,11 +65,21 @@ export default function DayPlanner({ route }) {
   }, []);
 
   const [expandedIds, setExpandedIds] = useState([]);
+  const [expandedWorkoutIds, setExpandedWorkoutIds] = useState([]);
+
   const toggleExpand = (mealId) => {
     if (expandedIds.includes(mealId)) {
         setExpandedIds(expandedIds.filter(id => id !== mealId)); 
     } else {
         setExpandedIds([...expandedIds, mealId]);
+    }
+  };
+
+  const toggleExpandWorkout = (workoutId) => {
+    if (expandedWorkoutIds.includes(workoutId)) {
+      setExpandedWorkoutIds(expandedWorkoutIds.filter(id => id !== workoutId)); 
+    } else {
+      setExpandedWorkoutIds([...expandedWorkoutIds, workoutId]);
     }
   };
 
@@ -130,25 +140,32 @@ export default function DayPlanner({ route }) {
             )}
             
             <Text style={styles.headerText}>Workouts:</Text>
-            {workouts.length > 0 ? (
-              workouts.map(workout => (
-                <View key={workout.id} style={styles.workoutContainer}>
-                  <Text>Description: </Text>
-                  <Text style={styles.workoutText}>{workout.workoutDescription}</Text>
-                  <Text>Type: </Text>
-                  <Text style={styles.workoutText}>{workout.type}/{workout.muscle}</Text>
-                  <Text>Time: </Text>
-                  <Text style={styles.mealText}>
-                      {new Date(workout.timestamp).toLocaleTimeString([], {
-                          hour: '2-digit',
-                          minute: '2-digit' 
-                      })}
-                  </Text>
-                </View>
-              ))
-            ) : (
-              <Text>No workouts logged for today.</Text>
-            )}
+              {workouts.length > 0 ? (
+                workouts.map(workout => (
+                  <View key={workout.id} style={styles.workoutContainer}>
+                    <TouchableOpacity onPress={() => toggleExpandWorkout(workout.id)}>
+                      <Text>Description: </Text>
+                      <Text style={styles.workoutText}>{workout.workoutDescription}</Text>
+                      <Text>Type: </Text>
+                      <Text style={styles.workoutText}>{workout.type}/{workout.muscle}</Text>
+                      <Text>Time: </Text>
+                      <Text style={styles.mealText}>
+                        {new Date(workout.timestamp).toLocaleTimeString([], {
+                            hour: '2-digit',
+                            minute: '2-digit' 
+                        })}
+                      </Text>
+                    </TouchableOpacity>
+
+                    <Collapsible collapsed={!expandedWorkoutIds.includes(workout.id)}> 
+                      <Text>Instructions: </Text>
+                      <Text style={styles.workoutText}>{workout.instructions}</Text> 
+                    </Collapsible>
+                  </View>
+                ))
+              ) : (
+                <Text>No workouts logged for today.</Text>
+              )}
           </View>
         )}
       </View>
