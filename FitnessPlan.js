@@ -1,8 +1,9 @@
 import React, { useState, useEffect } from 'react';
-import { View, Text, StyleSheet, ScrollView, Pressable, Picker} from 'react-native';
+import { View, Text, StyleSheet, ScrollView, Pressable } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import { getDoc, doc } from 'firebase/firestore/lite';
 import { auth, db } from './firebase';
+import { Picker } from '@react-native-picker/picker';
 
 export default function FitnessPlan() {
   const navigation = useNavigation();

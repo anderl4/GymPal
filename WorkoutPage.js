@@ -1,11 +1,12 @@
 import React, { useState, useEffect } from 'react';
-import { View, Text, StyleSheet, Picker, ScrollView, Pressable, TouchableOpacity } from 'react-native';
+import { View, Text, StyleSheet, ScrollView, Pressable, TouchableOpacity } from 'react-native';
 import { API_KEY } from '@env';
 import { useNavigation } from '@react-navigation/native';
 import { AntDesign } from "@expo/vector-icons";
 import { setDoc, doc } from 'firebase/firestore/lite';
 import { auth, db } from './firebase';
 import { showMessage } from 'react-native-flash-message';
+import { Picker } from '@react-native-picker/picker';
 
 
 export default function WorkoutPage({ route }) { 
