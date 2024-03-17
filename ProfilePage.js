@@ -17,7 +17,7 @@ export default function ProfilePage() {
       </View>
 
       <View style={styles.userInfoSection}>
-        <Ionicons name="person-circle-outline" size={120} color="#4F8EF7" />
+        <Ionicons name="person-circle-outline" size={80} color="#4F8EF7" />
         <Text style={styles.userName}>{auth.currentUser?.displayName || "No name available"}</Text>
         <Text style={styles.userEmail}>{auth.currentUser?.email || "No email available"}</Text>
       </View>
@@ -33,29 +33,30 @@ export default function ProfilePage() {
     </View>
   );
 }
-
 const styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: '#FFF',
-    justifyContent: 'center',
+    justifyContent: 'flex-start',
     alignItems: 'center',
-    paddingTop: 80,
+    paddingTop: 20, 
   },
   header: {
     flexDirection: 'row',
+    alignItems: 'center', 
     alignSelf: 'flex-start',
     paddingHorizontal: 20,
     position: 'absolute',
-    top: 40,
-    left: 0,
+    top: 100, 
   },
   backButton: {
     marginRight: 10,
+    marginBottom: 5,
   },
   backButtonText: {
     fontFamily: 'Poppins',
     fontSize: 25,
+    marginTop: 6,
     fontWeight: '700',
     color: '#000',
   },
@@ -64,10 +65,11 @@ const styles = StyleSheet.create({
     fontSize: 20,
     fontWeight: '700',
     color: '#000',
+    marginLeft: 1,
   },
   userInfoSection: {
     alignItems: 'center',
-    marginTop: 20,
+    marginTop: 120, 
   },
   userName: {
     fontFamily: 'Poppins',
