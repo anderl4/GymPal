@@ -22,7 +22,7 @@ export default function LogMeals() {
   const isEmptyField = () => {
     return !mealDescription || !date;
   };
-  const logMealToDB = async (mealDescription, calories, date) => {
+  const logMealToDB = async (mealDescription, calories, servingAmount, protein, sodium, carbs, fat, date) => {
     //check
     if (!date) {
         console.error("No date provided for logging meal.");
@@ -36,6 +36,12 @@ export default function LogMeals() {
         const mealRef = doc(db, "users", auth.currentUser.uid, "data", "meals", dateString, mealDescription);
         await setDoc(mealRef, {
             calories,
+            servings: servingAmount,
+            protein: protein,
+            sodium: sodium,
+            carbs: carbs,
+            fat: fat,
+            mealDescription: mealDescription,
             timestamp: date.toISOString()
         }, { merge: true });
         console.log("Meal logged successfully!");
@@ -63,13 +69,18 @@ export default function LogMeals() {
         })
         .then(data => {
           console.log(data[0]);
+
+          let servings = Number(servingAmount);
           
           const mealName = data[0]['name'];
-          const calories = data[0]['calories'];
-          const totalCalories = calories * servingAmount;
+          const calories = data[0]['calories'] * servings;
+          const protein = data[0]['protein_g'] * servings;
+          const sodium = data[0]['sodium_mg'] * servings;
+          const carbs = data[0]['carbohydrates_total_g'] * servings;
+          const fat = data[0]['fat_total_g'] * servings;
 
           console.log('Logging meal with date:', date);
-          logMealToDB(mealName, totalCalories, date);
+          logMealToDB(mealName, calories, servings, protein, sodium, carbs, fat, date);
         })
         .catch(error => {
           console.error('Request failed:', error);
