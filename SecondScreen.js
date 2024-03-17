@@ -19,6 +19,15 @@ export default function SecondScreen() {
       const dateString = currentDate.toISOString().split('T')[0]; // YYYY-MM-DD format
       console.log(dateString)
 
+      // get user data
+      const docSnap = await getDoc(doc(db, "users", auth.currentUser.uid));
+      if (docSnap.exists()) {
+        const userData = docSnap.data();
+        const { age, gender, weight, height, experienceLevel, activityLevel, fitnessPlanSetup } = userData;
+      } else {
+        console.log("No such document!");
+      }
+
       // Fetch water data
       const waterRef = doc(db, "users", auth.currentUser.uid, "data", "hydration", dateString, "water");
       const waterDoc = await getDoc(waterRef);
@@ -78,13 +87,51 @@ export default function SecondScreen() {
     fetchUserData();
   }, []);
 
+  function calculateCalorieGoal(userData) {
+    // Extract data from userData object
+    const { age, gender, weight, height, activityLevel } = userData;
+
+    // Calculate BMR based on gender
+    let bmr;
+    if (gender === 'male') {
+      bmr = (10 * weightInKg) + (6.25 * heightInCm) - (5 * age) + maleConstant;
+    } else if (gender === 'female') {
+      bmr = (10 * weightInKg) + (6.25 * heightInCm) - (5 * age) + femaleConstant;
+    }
+
+    // Adjust BMR based on activity level
+    let activityFactor;
+    switch (activityLevel.toLowerCase()) {
+        case '1-2 times a week':
+            activityFactor = 1.2;
+            break;
+        case '2-3 times a week':
+            activityFactor = 1.375;
+            break;
+        case '3-4 times a week':
+            activityFactor = 1.55;
+            break;
+        case '5-6 times a week':
+            activityFactor = 1.725;
+            break;
+        case '6-7 times a week':
+            activityFactor = 1.9;
+            break;
+    }
+
+    // Calculate calorie goal
+    const calorieGoal = Math.round(bmr * activityFactor);
+
+    return calorieGoal;
+  }
+
   const calculateLifestyleScore = (waterIntake, meals) => {
     console.log("Water Intake:", waterIntake);
     console.log("Meals:", meals);
-  
+
     let waterDrank = Math.min(1, waterIntake / 88);
     let totalCalories = 0;
-    let calorieGoal = 2250;
+    let calorieGoal = calculateCalorieGoal(userData);
   
     meals.forEach((meal) => {
       totalCalories += meal.calories;
@@ -100,7 +147,7 @@ export default function SecondScreen() {
     let weightedExercise = exercise * 0.2;
 
     return (weightedWater + weightedCalories + weightedExercise) * 100;
-};
+  };
 
   useEffect(() => {
     const lifestyleScore = calculateLifestyleScore(waterIntake, meals);
