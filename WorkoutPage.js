@@ -55,7 +55,7 @@ export default function WorkoutPage({ route }) {
     });
   };
 
-  const logWorkoutToDB = async (workoutDescription, muscle, type, instructions, date) => {
+  const logWorkoutToDB = async (workoutDescription, muscle, type, instructions, difficulty, date) => {
     try {
       const year = date.getFullYear();
       const month = ('0' + (date.getMonth() + 1)).slice(-2);
@@ -68,6 +68,7 @@ export default function WorkoutPage({ route }) {
         muscle: muscle,
         type: type,
         instructions: instructions,
+        difficulty: difficulty,
         timestamp: date.toISOString() 
       }, { merge: true });
   
@@ -87,9 +88,10 @@ export default function WorkoutPage({ route }) {
     const muscle = exercise.muscle;
     const type = exercise.type;
     const instructions = exercise.instructions;
+    const difficulty = exercise.difficulty;
     const date = new Date();
   
-    logWorkoutToDB(workoutDescription, muscle, type, instructions, date);
+    logWorkoutToDB(workoutDescription, muscle, type, instructions, difficulty, date);
   };
 
   return (

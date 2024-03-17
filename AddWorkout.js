@@ -24,7 +24,7 @@ export default function LogWorkouts() {
     return !workoutDescription || !date;
   };
 
-  const logWorkoutToDB = async (workoutDescription, muscle, type, instructions, date) => {
+  const logWorkoutToDB = async (workoutDescription, muscle, type, instructions, difficulty, date) => {
     try {
       const year = date.getFullYear();
       const month = ('0' + (date.getMonth() + 1)).slice(-2);
@@ -37,6 +37,7 @@ export default function LogWorkouts() {
         muscle: muscle,
         type: type,
         instructions: instructions,
+        difficulty: difficulty,
         timestamp: date.toISOString() 
       }, { merge: true });
   
@@ -70,9 +71,10 @@ export default function LogWorkouts() {
           const muscle = data[0]['muscle'];
           const type = data[0]['type'];
           const instructions = data[0]['instructions'];
+          const difficulty = data[0]['difficulty'];
 
           console.log('Logging workout with date:', date);
-          logWorkoutToDB(workoutDescription, muscle, type, instructions, date);
+          logWorkoutToDB(workoutDescription, muscle, type, instructions, difficulty, date);
         })
         .catch(error => {
           console.error('Request failed:', error);
