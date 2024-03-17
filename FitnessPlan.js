@@ -141,18 +141,51 @@ const styles = StyleSheet.create({
   detailItem: {
     flexDirection: 'row',
     alignItems: 'center', // Vertically align label and value
-    marginBottom: 15 
+    marginBottom: 15
   },
   detailLabel: {
     color: '#060302',
-    fontFamily: 'Poppins', 
-    fontSize: 16, 
+    fontFamily: 'Poppins',
+    fontSize: 16,
     fontWeight: '500', // Maybe a bit bolder?
-    marginRight: 10 
+    marginRight: 10
   },
   detailValue: {
     color: '#060302', // Or a slightly subdued color like '#70747E'
-    fontFamily: 'Poppins', 
-    fontSize: 16 
+    fontFamily: 'Poppins',
+    fontSize: 16
   },
+  pickerContainer: {
+    borderRadius: 10,
+    borderWidth: 1,
+    borderColor: '#ccc',
+    overflow: 'hidden',
+    width: 150,
+    marginBottom: 10
+  },
+  picker: {
+    height: 50,
+    width: '100%',
+    fontFamily: 'Poppins',
+    fontSize: 16,
+    color: '#060302'
+  },
+  confirmButton: {
+    backgroundColor: '#007bff',
+    padding: 12,
+    borderRadius: 8,
+    alignItems: 'center',
+    marginTop: 10
+  },
+  confirmButtonText: {
+    color: '#fff',
+    fontFamily: 'Poppins',
+    fontSize: 16,
+    fontWeight: '600'
+  },
+  loading: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center'
+  }
 });

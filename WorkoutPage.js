@@ -63,7 +63,7 @@ export default function WorkoutPage({ route }) {
         style={styles.picker}
         onValueChange={handleOptionChange}>
         {options.map((option, index) => (
-          <Picker.Item key={index} label={option} value={option} />
+          <Picker.Item key={index} label={option.replace(/_/g, ' ')} value={option.replace(/_/g, ' ')} />
         ))}
       </Picker>
 
@@ -72,9 +72,9 @@ export default function WorkoutPage({ route }) {
         <Text style={styles.exerciseTitle}>Exercise Recommendations:</Text>
         {exerciseData.map((exercise, index) => (
           <View key={index} style={styles.exerciseCard}>
-            <Text style={styles.exerciseName}>{exercise.name}</Text>
-            <Text>Type: {exercise.type}</Text>
-            <Text>Muscle: {exercise.muscle}</Text>
+            <Text style={styles.exerciseName}>{exercise.name.replace(/_/g, ' ')}</Text>
+            <Text>Type: {exercise.type.replace(/_/g, ' ')}</Text>
+            <Text>Muscle: {exercise.muscle.replace(/_/g, ' ')}</Text>
             <Text>Equipment: {exercise.equipment}</Text>
             <Text>Difficulty: {exercise.difficulty}</Text>
             <Text style={styles.instructions}>{exercise.instructions}</Text>
@@ -150,6 +150,9 @@ const styles = StyleSheet.create({
     marginBottom: 5,
   },
   instructions: {
-    marginTop: 5,
+    marginTop: 10,
   },
+  // spacing: {
+  //   marginBottom: 10, // Adjust this value as needed
+  // },
 });

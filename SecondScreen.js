@@ -71,7 +71,7 @@ export default function SecondScreen() {
   };
 
   const handleProfilePress = () => {
-    console.log('Profile icon pressed');
+    navigation.navigate('ProfilePage');
   };
 
   useEffect(() => {
@@ -164,16 +164,7 @@ export default function SecondScreen() {
           ))}
       </View>
 
-      <Pressable style={styles.button} onPress={() => auth.signOut().then(function() {
-        // sign out successful
-        console.log("signed out");
-      })
-      .catch(function(error) {
-        // sign out error
-        console.error(error);
-      })}>
-        <Text style={styles.buttonText}>temporary signout button</Text>
-      </Pressable>
+      
 
       {/* COOL FLOATING ACTION BUTTON!! */}
       <FloatingButton style={{ bottom: 120, right: 80}} />
