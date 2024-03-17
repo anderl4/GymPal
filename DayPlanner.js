@@ -158,6 +158,8 @@ export default function DayPlanner({ route }) {
                     </TouchableOpacity>
 
                     <Collapsible collapsed={!expandedWorkoutIds.includes(workout.id)}> 
+                      <Text>Difficulty: </Text>
+                      <Text style={styles.workoutText}>{workout.difficulty}</Text> 
                       <Text>Instructions: </Text>
                       <Text style={styles.workoutText}>{workout.instructions}</Text> 
                     </Collapsible>
