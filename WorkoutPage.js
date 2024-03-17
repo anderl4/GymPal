@@ -1,7 +1,11 @@
 import React, { useState, useEffect } from 'react';
-import { View, Text, StyleSheet, Picker, ScrollView, Pressable } from 'react-native';
+import { View, Text, StyleSheet, Picker, ScrollView, Pressable, TouchableOpacity } from 'react-native';
 import { API_KEY } from '@env';
 import { useNavigation } from '@react-navigation/native';
+import { AntDesign } from "@expo/vector-icons";
+import { setDoc, doc } from 'firebase/firestore/lite';
+import { auth, db } from './firebase';
+import { showMessage } from 'react-native-flash-message';
 
 
 export default function WorkoutPage({ route }) { 
@@ -50,6 +54,43 @@ export default function WorkoutPage({ route }) {
     });
   };
 
+  const logWorkoutToDB = async (workoutDescription, muscle, type, date) => {
+    try {
+      const year = date.getFullYear();
+      const month = ('0' + (date.getMonth() + 1)).slice(-2);
+      const day = ('0' + date.getDate()).slice(-2);
+      const dateString = `${year}-${month}-${day}`;
+      const workoutId = `workout_${date.getTime()}`;
+      const workoutRef = doc(db, "users", auth.currentUser.uid, "data", "workouts", dateString, workoutId);
+      await setDoc(workoutRef, {
+        workoutDescription,
+        muscle: muscle,
+        type: type,
+        timestamp: date.toISOString() 
+      }, { merge: true });
+  
+      console.log("Workout logged successfully!");
+      showMessage({
+        message: "Workout logged successfully!",
+        description: date.toLocaleTimeString([], {year: 'numeric', month: 'numeric', day: 'numeric', hour: '2-digit', minute: '2-digit'}),
+        type: "success",
+      });
+    } catch (err) {
+      console.error("Error logging workout: ", err);
+    }
+  };
+
+  const handleAddToDatabase = (exercise) => {
+    // You might need parts from the 'logWorkoutToDB' function here,
+    // especially constructing the workoutRef
+    const workoutDescription = exercise.name; 
+    const muscle = exercise.muscle;
+    const type = exercise.type;
+    const date = new Date();
+  
+    logWorkoutToDB(workoutDescription, muscle, type, date);
+  };
+
   return (
     <ScrollView style={styles.container}>
       <View style={styles.header}>
@@ -80,6 +121,13 @@ export default function WorkoutPage({ route }) {
             <Text>Equipment: {exercise.equipment}</Text>
             <Text>Difficulty: {exercise.difficulty}</Text>
             <Text style={styles.instructions}>{exercise.instructions}</Text>
+
+            {/* Add Button */}
+            <TouchableOpacity 
+              style={styles.addButton} 
+              onPress={() => handleAddToDatabase(exercise)}> 
+              <AntDesign name="plus" size={24} color="#FFF" />
+            </TouchableOpacity>
           </View>
         ))}
       </View>
@@ -157,4 +205,12 @@ const styles = StyleSheet.create({
   // spacing: {
   //   marginBottom: 10, // Adjust this value as needed
   // },
+  addButton: {
+    position: 'absolute',
+    right: 10, 
+    top: 10,  
+    padding: 5, 
+    backgroundColor: 'green',
+    borderRadius: 5, 
+  },
 });
