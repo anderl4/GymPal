@@ -1,9 +1,11 @@
 import React, { useState, useEffect } from 'react';
 import { View, Text, StyleSheet, Picker, ScrollView, Pressable } from 'react-native';
 import { API_KEY } from '@env';
+import { useNavigation } from '@react-navigation/native';
 
 
-export default function WorkoutPage({ route }) {
+export default function WorkoutPage({ route }) { 
+  const navigation = useNavigation();
   const { selectedValue } = route.params;
 
   const [selectedOption, setSelectedOption] = useState('');
@@ -16,7 +18,7 @@ export default function WorkoutPage({ route }) {
     } else if (selectedValue === 'muscle') {
       setOptions(['Abdominals','Abductors','Adductors','Biceps','Calves','Chest','Forearms','Glutes','Hamstrings','Lats','Lower_back','Middle_back','Neck','Quadriceps','Traps','Triceps']);
     } else if (selectedValue === 'difficulty') {
-      setOptions(['Beginner', 'Intermediate', 'Advanced']);
+      setOptions(['Beginner', 'Intermediate', 'Expert']);
     }
 
     // Call the API with default selected option when the component mounts
