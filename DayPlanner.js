@@ -10,6 +10,7 @@ export default function DayPlanner({ route }) {
 
   const [waterIntake, setWaterIntake] = useState(null);
   const [meals, setMeals] = useState([]);
+  const [workouts, setWorkouts] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
 
   const formatDate = (date) => {
@@ -21,9 +22,7 @@ export default function DayPlanner({ route }) {
     setIsLoading(true);
 
     try {
-      const dateString = date.toISOString().split('T')[0]; // YYYY-MM-DD format
-
-      // Fetch water data
+      const dateString = date.toISOString().split('T')[0];
       const waterRef = doc(db, "users", auth.currentUser.uid, "data", "hydration", dateString, "water");
       const waterDoc = await getDoc(waterRef);
 
@@ -33,16 +32,25 @@ export default function DayPlanner({ route }) {
         setWaterIntake(0);
       }
 
-      // Fetch meal data
       const mealsRef = collection(db, "users", auth.currentUser.uid, "data", "meals", dateString);
       const mealsQuery = query(mealsRef);
       const mealsSnapshot = await getDocs(mealsQuery);
 
       const newMeals = mealsSnapshot.docs.map(doc => ({
-        id: doc.id,  // Get the meal ID
-        ...doc.data(),  // Extract the mealData
+        id: doc.id,
+        ...doc.data(),
       }));
       setMeals(newMeals);
+
+      const workoutsRef = collection(db, "users", auth.currentUser.uid, "data", "workouts", dateString);
+      const workoutsQuery = query(workoutsRef);
+      const workoutsSnapshot = await getDocs(workoutsQuery);
+
+      const newWorkouts = workoutsSnapshot.docs.map(doc => ({
+        id: doc.id, 
+        ...doc.data(),
+      }));
+      setWorkouts(newWorkouts);
 
     } catch (error) {
       console.error('Error fetching data:', error);
@@ -55,6 +63,8 @@ export default function DayPlanner({ route }) {
     fetchUserData();
   }, []);
 
+
+  //meal description doesnt show up rn not sure why i think might have to do with how its stored in firebase
   return (
     <ScrollView contentContainerStyle={styles.scrollViewContainer}>
       <View style={styles.container}>
@@ -73,20 +83,27 @@ export default function DayPlanner({ route }) {
               You've drank {waterIntake.toFixed(2)} oz of water this day!
             </Text>
 
-            {/* Display meals */}
-            {meals.map(meal => (
-              <View key={meal.id} style={styles.mealContainer}>
-                <Text style={styles.mealText}>
-                  {new Date(meal.date.seconds * 1000).toLocaleString('en-US', {
-                    hour: 'numeric',
-                    minute: '2-digit',
-                    hour12: true
-                  })}
-                </Text>
-                <Text style={styles.mealText}>{meal.mealDescription}</Text>
-                <Text style={styles.mealText}>Calories: {meal.calories}</Text>
-              </View>
-            ))}
+            <Text style={styles.headerText}>Meals:</Text>
+            {meals.length > 0 ? (
+              meals.map(meal => (
+                <View key={meal.id} style={styles.mealContainer}>
+                  <Text style={styles.mealText}>{meal.mealDescription}</Text>
+                  <Text style={styles.mealText}>Calories: {meal.calories}</Text>
+                </View>
+              ))
+            ) : (
+              <Text>No meals logged for today.</Text>
+            )}
+            <Text style={styles.headerText}>Workouts:</Text>
+            {workouts.length > 0 ? (
+              workouts.map(workout => (
+                <View key={workout.id} style={styles.workoutContainer}>
+                  <Text style={styles.workoutText}>{workout.workoutDescription}</Text>
+                </View>
+              ))
+            ) : (
+              <Text>No workouts logged for today.</Text>
+            )}
           </View>
         )}
       </View>
@@ -101,13 +118,13 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: '#FFF',
-    padding: 20, // Add padding to create margins
+    padding: 20,
     paddingTop: 80,
   },
   header: {
     flexDirection: 'row',
     alignItems: 'center',
-    marginBottom: 20, // Add margin bottom to header
+    marginBottom: 20, 
   },
   backButton: {
     marginRight: 15,
@@ -149,5 +166,24 @@ const styles = StyleSheet.create({
     fontFamily: 'Poppins',
     fontSize: 16,
     marginBottom: 5,
+  },
+  headerText: {
+    color: '#060302',
+    fontFamily: 'Poppins',
+    fontSize: 16,
+    fontWeight: '500',
+    marginBottom: 10,
+  },
+  workoutContainer: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    marginBottom: 5,
+  },
+  workoutText: {
+    color: '#060302',
+    fontFamily: 'Poppins',
+    fontSize: 16,
+    fontWeight: '500',
+    marginBottom: 10,
   },
 });
