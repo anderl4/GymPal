@@ -15,6 +15,7 @@ export default function LogMeals() {
   const [showAlert, setShowAlert] = useState(false);
   const [alertMessage, setAlertMessage] = useState('');
   const [mealDescription, setMealDescription] = useState('');
+  const [servingAmount, setServingAmount] = useState('');
   const [date, setDate] = useState(new Date());
   const [mode, setMode] = useState('date');
   const [show, setShow] = useState(false);
@@ -63,10 +64,12 @@ export default function LogMeals() {
         .then(data => {
           console.log(data[0]);
           
-          const mealName = data[0]['name']
-          const calories = data[0]['calories']
+          const mealName = data[0]['name'];
+          const calories = data[0]['calories'];
+          const totalCalories = calories * servingAmount;
+
           console.log('Logging meal with date:', date);
-          logMealToDB(mealName, calories, date);
+          logMealToDB(mealName, totalCalories, date);
         })
         .catch(error => {
           console.error('Request failed:', error);
@@ -137,6 +140,14 @@ export default function LogMeals() {
           value={mealDescription}
           onChangeText={setMealDescription}
           placeholder="What did you eat?"
+        />
+
+        <Text style={styles.label}>Servings</Text>
+        <TextInput
+          style={styles.input}
+          value={servingAmount}
+          onChangeText={setServingAmount}
+          placeholder="How many servings did you eat?"
         />
 
       <Text style={styles.label}>Date</Text>
