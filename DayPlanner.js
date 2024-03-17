@@ -1,8 +1,9 @@
 import React, { useState, useEffect } from 'react';
-import { View, Text, StyleSheet, ScrollView, Pressable } from 'react-native';
+import { View, Text, StyleSheet, ScrollView, Pressable, TouchableOpacity } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import { getDoc, doc, getDocs, collection, query } from 'firebase/firestore/lite';
 import { auth, db } from './firebase';
+import Collapsible from 'react-native-collapsible';
 
 export default function DayPlanner({ route }) {
   const navigation = useNavigation();
@@ -63,6 +64,14 @@ export default function DayPlanner({ route }) {
     fetchUserData();
   }, []);
 
+  const [expandedIds, setExpandedIds] = useState([]);
+  const toggleExpand = (mealId) => {
+    if (expandedIds.includes(mealId)) {
+        setExpandedIds(expandedIds.filter(id => id !== mealId)); 
+    } else {
+        setExpandedIds([...expandedIds, mealId]);
+    }
+  };
 
   //meal description doesnt show up rn not sure why i think might have to do with how its stored in firebase
   return (
@@ -83,17 +92,43 @@ export default function DayPlanner({ route }) {
               You've drank {waterIntake.toFixed(2)} oz of water this day!
             </Text>
 
+
             <Text style={styles.headerText}>Meals:</Text>
             {meals.length > 0 ? (
               meals.map(meal => (
-                <View key={meal.id} style={styles.mealContainer}>
-                  <Text style={styles.mealText}>{meal.mealDescription}</Text>
-                  <Text style={styles.mealText}>Calories: {meal.calories}</Text>
-                </View>
+                  <View key={meal.id} style={styles.mealContainer}>
+                      <TouchableOpacity onPress={() => toggleExpand(meal.id)}>
+                        <Text style={styles.mealDetailLabel}>Description: </Text>
+                        <Text style={styles.mealText}>{meal.mealDescription}</Text>
+                        <Text style={styles.mealDetailLabel}>Calories: </Text>
+                        <Text style={styles.mealText}>{meal.calories}</Text>
+                        <Text style={styles.mealDetailLabel}>Time: </Text>
+                        <Text style={styles.mealText}>
+                            {new Date(meal.timestamp).toLocaleTimeString([], {
+                                hour: '2-digit',
+                                minute: '2-digit' 
+                            })}
+                        </Text>
+                      </TouchableOpacity>
+
+                      <Collapsible collapsed={!expandedIds.includes(meal.id)}> 
+                        <Text style={styles.mealDetailLabel}>Servings: </Text>
+                        <Text style={styles.mealText}>{meal.servings}</Text>
+                        <Text style={styles.mealDetailLabel}>Carbs: </Text>
+                        <Text style={styles.mealText}>{meal.carbs} g</Text>
+                        <Text style={styles.mealDetailLabel}>Fat: </Text>
+                        <Text style={styles.mealText}>{meal.fat} g</Text>
+                        <Text style={styles.mealDetailLabel}>Protein: </Text>
+                        <Text style={styles.mealText}>{meal.protein} g</Text>
+                        <Text style={styles.mealDetailLabel}>Sodium: </Text>
+                        <Text style={styles.mealText}>{meal.sodium} mg</Text>
+                      </Collapsible>
+                  </View>
               ))
             ) : (
-              <Text>No meals logged for today.</Text>
+                <Text>No meals logged for today.</Text>
             )}
+            
             <Text style={styles.headerText}>Workouts:</Text>
             {workouts.length > 0 ? (
               workouts.map(workout => (
