@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { View, Text, StyleSheet, Pressable, TextInput, ScrollView } from 'react-native';
+import { View, Text, StyleSheet, Pressable, FlatList, ScrollView } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import { API_KEY } from '@env';
 
@@ -55,13 +55,13 @@ export default function RecipePage ({ route }) {
           <Text style={styles.exerciseName}>{recipe.title}</Text>
 
           <Text style={styles.sectionHeader}>Ingredients:</Text> 
-          <ul style={styles.ingredientList}> 
-            {recipe.ingredients.split('|').map((ingredient, ingredientIndex) => (
-              <li key={ingredientIndex} style={styles.ingredientItem}>
-                {ingredient.trim()} 
-              </li>
-            ))}
-          </ul>
+          <FlatList 
+            data={recipe.ingredients.split('|')}
+            keyExtractor={(ingredient, ingredientIndex) => ingredientIndex.toString()}
+            renderItem={({ item }) => (
+              <Text style={styles.ingredientItem}>{item.trim()}</Text>
+            )}
+          />
 
           <Text style={styles.sectionHeader}>Servings:</Text>
           <Text style={styles.servingInfo}>{recipe.servings}</Text>
