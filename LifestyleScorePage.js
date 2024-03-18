@@ -36,6 +36,11 @@ export default function LifestyleScorePage({ route }) {
     });
   };
 
+  const formatDate = (date) => {
+    const options = { month: 'long', day: 'numeric', year: 'numeric' };
+    return date.toLocaleDateString('en-US', options);
+  };
+
   return (
     <ScrollView style={styles.container}>
       <View style={styles.header}>
@@ -46,6 +51,7 @@ export default function LifestyleScorePage({ route }) {
       </View>
 
       <View style={styles.content}>
+        <Text style={styles.hintText}>{formatDate(new Date())}</Text>
         <Text style={styles.scoreTitle}>Overall Lifestyle Score: {lifestyleScore.toFixed(2)}%</Text> 
         <View style={styles.goalSection}>
           <Text style={styles.goalLabel}>Water Intake:</Text>
