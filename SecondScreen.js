@@ -170,7 +170,7 @@ export default function SecondScreen() {
       // Update lifestyle score in state
       setLifestyleScore(lifestyleScore);
     }
-  }, [waterIntake, meals]);
+  }, [waterIntake, meals, workouts]);
   
   useFocusEffect(
     useCallback(() => {
