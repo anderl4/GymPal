@@ -11,7 +11,7 @@ import { Picker } from '@react-native-picker/picker';
 
 export default function WorkoutPage({ route }) { 
   const navigation = useNavigation();
-  const { selectedValue } = route.params;
+  const { selectedValue, difficulty } = route.params;
 
   const [selectedOption, setSelectedOption] = useState('');
   const [options, setOptions] = useState([]);
@@ -26,9 +26,12 @@ export default function WorkoutPage({ route }) {
       setOptions(['Beginner', 'Intermediate', 'Expert']);
     }
 
-    // Call the API with default selected option when the component mounts
-    handleOptionChange(selectedOption);
-  }, [selectedValue]);
+    if (difficulty && selectedValue === 'difficulty') {
+      handleOptionChange(difficulty); 
+    } else {
+      handleOptionChange(selectedOption);
+    }
+  }, [selectedValue, difficulty]);
 
   const handleOptionChange = (itemValue, itemIndex) => {
     setSelectedOption(itemValue);
@@ -97,7 +100,7 @@ export default function WorkoutPage({ route }) {
   return (
     <ScrollView style={styles.container}>
       <View style={styles.header}>
-        <Pressable style={styles.backButton} onPress={() => navigation.navigate('FitnessPlan')}>
+        <Pressable style={styles.backButton} onPress={() => navigation.goBack()}>
           <Text style={styles.backButtonText}>{"<"}</Text>
         </Pressable>
         <Text style={styles.title}>Your Workout Recommendation</Text>

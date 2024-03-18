@@ -14,6 +14,15 @@ export default function SecondScreen() {
   const [meals, setMeals] = useState([]);
   const [lifestyleScore, setLifestyleScore] = useState(0);
   const [workouts, setWorkouts] = useState([]);
+  const [userGoals, setUserGoals] = useState({
+    waterIntake: 88,
+    calories: 0,
+    workouts: 0,
+    currentWaterIntake: 0,
+    currentCalories: 0,
+    currentWorkouts: 0,
+    hasLoggedWorkout: false,
+  });
 
 
   const fetchUserData = async () => {
@@ -185,6 +194,16 @@ export default function SecondScreen() {
     let weightedCalories = calorieProgress * 0.4;
     let weightedExercise = fitnessProgress * 0.2;
 
+    setUserGoals({
+      waterIntake: 88,
+      calories: calorieGoal,
+      workouts: fitnessGoal,
+      currentWaterIntake: waterDrank,
+      currentCalories: totalCalories,
+      currentWorkouts: activity,
+      hasLoggedWorkout: workouts.length > 0,
+    });
+
     return (weightedWater + weightedCalories + weightedExercise) * 100;
   };
 
@@ -230,6 +249,9 @@ export default function SecondScreen() {
           </View>
           <Text style={styles.lifestyleScorePercentage}>{lifestyleScore.toFixed(2)}%</Text>
         </View>
+        <Pressable onPress={() => navigation.navigate('LifestyleScorePage', { userData: userData, userGoals: userGoals, lifestyleScore: lifestyleScore })}>
+          <Text style={[styles.lifestyleScorePercentage, {fontStyle:"italic"}]}>What does this mean?</Text>
+        </Pressable>
       </View>
       <View style={styles.rectangle}>
         <Text style={styles.rectangleText}>View your fitness plan today!</Text>
