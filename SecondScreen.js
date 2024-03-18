@@ -1,6 +1,6 @@
-import { React, useState, useEffect } from 'react';
+import { React, useState, useEffect, useCallback } from 'react';
 import { View, Text, StyleSheet, Pressable, Image, ImageBackground} from 'react-native';
-import { useNavigation } from '@react-navigation/native';
+import { useFocusEffect, useNavigation } from '@react-navigation/native';
 import { Ionicons } from '@expo/vector-icons';
 import { auth, db } from './firebase';
 import { getDoc, doc, getDocs, collection, query } from 'firebase/firestore/lite';
@@ -98,11 +98,6 @@ export default function SecondScreen() {
     navigation.navigate('ProfilePage');
   };
 
-  useEffect(() => {
-    fetchUserData();
-  }, []);
-
-
   function calculateCalorieGoal(userData) {
     // Extract data from userData object
     const { age, gender, weight, height, activityLevel } = userData;
@@ -166,8 +161,6 @@ export default function SecondScreen() {
     let weightedCalories = calorieProgress * 0.4;
     let weightedExercise = exercise * 0.2;
 
-    console.log(calorieProgress);
-
     return (weightedWater + weightedCalories + weightedExercise) * 100;
   };
 
@@ -179,6 +172,14 @@ export default function SecondScreen() {
     }
   }, [waterIntake, meals]);
   
+  useFocusEffect(
+    useCallback(() => {
+      const refreshData = async () => {
+        fetchUserData();
+      }
+      refreshData();
+    }, [])
+  );
 
   return (
     <View style={styles.container}>
