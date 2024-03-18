@@ -65,6 +65,10 @@ export default function LifestyleScorePage({ route }) {
             <Text style={styles.recommendButtonText}>Get Recommended Workouts</Text>
           </Pressable>
         </View>
+
+        <View style={styles.hintTextContainer}>
+          <Text style={styles.hintText}>NOTE: Reopen this page to view updated values!</Text>
+        </View>
       </View>
     </ScrollView>
   );
@@ -195,5 +199,13 @@ const styles = StyleSheet.create({
     color: 'white',
     fontWeight: 'bold',
     fontFamily: 'Montserrat-Bold', 
+  },
+  hintTextContainer: {
+    flexDirection: 'row',
+    justifyContent: 'center',
+    marginTop: 20
+  },
+  hintText: {
+    fontFamily: 'Poppins',
   },
 });
