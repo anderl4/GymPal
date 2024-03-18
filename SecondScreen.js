@@ -20,8 +20,10 @@ export default function SecondScreen() {
     console.log("Getting user info")
     try {
       const currentDate = new Date();
-      const dateString = currentDate.toISOString().split('T')[0]; // YYYY-MM-DD format
-      console.log(dateString)
+      const year = currentDate.getFullYear();
+      const month = ('0' + (currentDate.getMonth() + 1)).slice(-2);
+      const day = ('0' + currentDate.getDate()).slice(-2);
+      const dateString = year + '-' + month + '-' + day; // YYYY-MM-DD format
 
       // get user data
       const docSnap = await getDoc(doc(db, "users", auth.currentUser.uid));
@@ -102,45 +104,41 @@ export default function SecondScreen() {
 
 
   function calculateCalorieGoal(userData) {
-    if (!userData) {
-      console.error('User data is null');
-      return 1; // Or any default value that makes sense in your application
-    }
-
     // Extract data from userData object
     const { age, gender, weight, height, activityLevel } = userData;
 
     // Calculate BMR based on gender
     let bmr;
-    if (gender === 'male') {
+    if (gender.toLowerCase() === 'male') {
       bmr = (10 * weight) + (6.25 * height) - (5 * age) + 5;
-    } else if (gender === 'female') {
+    } else if (gender.toLowerCase() === 'female') {
       bmr = (10 * weight) + (6.25 * height) - (5 * age) - 161;
+    } else {
+      bmr = (10 * weight) + (6.25 * height) - (5 * age); // default
     }
 
     // Adjust BMR based on activity level
-    let activityFactor;
+    let activityFactor = 1;
     switch (activityLevel) {
-        case '1-2 times a week':
+        case '1-2 times per week':
             activityFactor = 1.2;
             break;
-        case '2-3 times a week':
+        case '2-3 times per week':
             activityFactor = 1.375;
             break;
-        case '3-4 times a week':
+        case '3-4 times per week':
             activityFactor = 1.55;
             break;
-        case '5-6 times a week':
+        case '5-6 times per week':
             activityFactor = 1.725;
             break;
-        case '6-7 times a week':
+        case '6-7 times per week':
             activityFactor = 1.9;
             break;
     }
 
     // Calculate calorie goal
     const calorieGoal = Math.round(bmr * activityFactor);
-
     return calorieGoal;
   }
 
@@ -151,7 +149,7 @@ export default function SecondScreen() {
     let waterDrank = Math.min(1, waterIntake / 88);
     let totalCalories = 0;
     let calorieGoal = calculateCalorieGoal(userData);
-  
+
     meals.forEach((meal) => {
       totalCalories += meal.calories;
     });
@@ -168,13 +166,17 @@ export default function SecondScreen() {
     let weightedCalories = calorieProgress * 0.4;
     let weightedExercise = exercise * 0.2;
 
+    console.log(calorieProgress);
+
     return (weightedWater + weightedCalories + weightedExercise) * 100;
   };
 
   useEffect(() => {
-    const lifestyleScore = calculateLifestyleScore(waterIntake, meals);
-    // Update lifestyle score in state
-    setLifestyleScore(lifestyleScore);
+    if (userData && userData.fitnessPlanSetup) {
+      const lifestyleScore = calculateLifestyleScore(waterIntake, meals);
+      // Update lifestyle score in state
+      setLifestyleScore(lifestyleScore);
+    }
   }, [waterIntake, meals]);
   
 
