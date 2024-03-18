@@ -19,9 +19,11 @@ export default function LogMeals() {
   const [date, setDate] = useState(new Date());
   const [mode, setMode] = useState('date');
   const [show, setShow] = useState(false);
+
   const isEmptyField = () => {
-    return !mealDescription || !date;
+    return !mealDescription || !date || !servingAmount;
   };
+
   const logMealToDB = async (mealDescription, calories, servingAmount, protein, sodium, carbs, fat, date) => {
     //check
     if (!date) {

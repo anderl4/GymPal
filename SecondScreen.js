@@ -97,8 +97,24 @@ export default function SecondScreen() {
   const handleProfilePress = () => {
     navigation.navigate('ProfilePage');
   };
+  
+  function calculateFitnessProgress() {
+    let goal = 0;
+    workouts.forEach((workout) => {
+      level = workout.difficulty;
 
-  function calculateCalorieGoal(userData) {
+      if (level === 'beginner') {
+        goal += 1
+      } else if (level === 'untermediate') {
+        goal += 1.5
+      } else {
+        goal += 2
+      }
+    });
+    return goal;
+  }
+
+  function calculateCalorieGoal() {
     // Extract data from userData object
     const { age, gender, weight, height, activityLevel } = userData;
 
@@ -137,19 +153,27 @@ export default function SecondScreen() {
     return calorieGoal;
   }
 
-  const calculateLifestyleScore = (waterIntake, meals) => {
-    console.log("Water Intake:", waterIntake);
-    console.log("Meals:", meals);
-
+  const calculateLifestyleScore = () => {
     let waterDrank = Math.min(1, waterIntake / 88);
     let totalCalories = 0;
-    let calorieGoal = calculateCalorieGoal(userData);
+    let calorieGoal = calculateCalorieGoal();
+    let activity = calculateFitnessProgress();
+    let fitnessGoal = 0;
+
+    if (userData.experienceLevel === "beginner") {
+      fitnessGoal = 3;
+    } else if (userData.experienceLevel === "intermediate") {
+      fitnessGoal = 4.5;
+    } else {
+      fitnessGoal = 6;
+    }
 
     meals.forEach((meal) => {
       totalCalories += meal.calories;
     });
   
     let calorieProgress = Math.min(1, totalCalories / calorieGoal);
+    let fitnessProgress = Math.min(1, activity / fitnessGoal);
 
     let exercise = 0;
     if (workouts[0]) {
@@ -159,14 +183,14 @@ export default function SecondScreen() {
     // weightings
     let weightedWater = waterDrank * 0.4;
     let weightedCalories = calorieProgress * 0.4;
-    let weightedExercise = exercise * 0.2;
+    let weightedExercise = fitnessProgress * 0.2;
 
     return (weightedWater + weightedCalories + weightedExercise) * 100;
   };
 
   useEffect(() => {
     if (userData && userData.fitnessPlanSetup) {
-      const lifestyleScore = calculateLifestyleScore(waterIntake, meals);
+      const lifestyleScore = calculateLifestyleScore();
       // Update lifestyle score in state
       setLifestyleScore(lifestyleScore);
     }
@@ -222,20 +246,19 @@ export default function SecondScreen() {
 
       <Text style={styles.fitnessActivitiesTitle}>My Fitness Activities</Text>
       <View style={{ flexDirection: 'row', marginLeft: 10, marginRight: 10, marginTop: 20, flexWrap: 'wrap' }}>
-          {days.map((day, index) => (
-              <Pressable 
-                  key={index} 
-                  style={[styles.dayRectangle, daysNum[index] === currentDate && styles.dayRectangleSelected]}
-                  onPress={() => handlePress(dates[index])}
-              >
-                  <Text style={[styles.dayText, daysNum[index] === currentDate && styles.dayTextSelected]}>{day}</Text>
-                  <View style={styles.circle}>
-                      <Text style={[styles.dayTextNum, daysNum[index] === currentDate && styles.dayTextNumSelected]}>{daysNum[index]}</Text>
-                  </View>
-              </Pressable>
-          ))}
+        {days.map((day, index) => (
+          <Pressable 
+            key={index} 
+            style={[styles.dayRectangle, daysNum[index] === currentDate && styles.dayRectangleSelected]}
+            onPress={() => handlePress(dates[index])}
+          >
+            <Text style={[styles.dayText, daysNum[index] === currentDate && styles.dayTextSelected]}>{day}</Text>
+            <View style={styles.circle}>
+              <Text style={[styles.dayTextNum, daysNum[index] === currentDate && styles.dayTextNumSelected]}>{daysNum[index]}</Text>
+            </View>
+          </Pressable>
+        ))}
       </View>
-
       
 
       {/* COOL FLOATING ACTION BUTTON!! */}

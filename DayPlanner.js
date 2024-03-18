@@ -106,34 +106,34 @@ export default function DayPlanner({ route }) {
             <Text style={styles.headerText}>Meals:</Text>
             {meals.length > 0 ? (
               meals.map(meal => (
-                  <View key={meal.id} style={styles.mealContainer}>
-                      <Pressable onPress={() => toggleExpand(meal.id)}>
-                        <Text>Description: </Text>
-                        <Text style={styles.mealText}>{meal.mealDescription}</Text>
-                        <Text>Calories: </Text>
-                        <Text style={styles.mealText}>{meal.calories}</Text>
-                        <Text>Time: </Text>
-                        <Text style={styles.mealText}>
-                            {new Date(meal.timestamp).toLocaleTimeString([], {
-                                hour: '2-digit',
-                                minute: '2-digit' 
-                            })}
-                        </Text>
-                      </Pressable>
+                <View key={meal.id} style={styles.mealContainer}>
+                  <Pressable onPress={() => toggleExpand(meal.id)}>
+                    <Text>Description: </Text>
+                    <Text style={styles.mealText}>{meal.mealDescription}</Text>
+                    <Text>Calories: </Text>
+                    <Text style={styles.mealText}>{meal.calories}</Text>
+                    <Text>Time: </Text>
+                    <Text style={styles.mealText}>
+                      {new Date(meal.timestamp).toLocaleTimeString([], {
+                        hour: '2-digit',
+                        minute: '2-digit' 
+                      })}
+                    </Text>
+                  </Pressable>
 
-                      <Collapsible collapsed={!expandedIds.includes(meal.id)}> 
-                        <Text>Servings: </Text>
-                        <Text style={styles.mealText}>{meal.servings}</Text>
-                        <Text>Carbs: </Text>
-                        <Text style={styles.mealText}>{meal.carbs} g</Text>
-                        <Text>Fat: </Text>
-                        <Text style={styles.mealText}>{meal.fat} g</Text>
-                        <Text>Protein: </Text>
-                        <Text style={styles.mealText}>{meal.protein} g</Text>
-                        <Text>Sodium: </Text>
-                        <Text style={styles.mealText}>{meal.sodium} mg</Text>
-                      </Collapsible>
-                  </View>
+                  <Collapsible collapsed={!expandedIds.includes(meal.id)}> 
+                    <Text>Servings: </Text>
+                    <Text style={styles.mealText}>{meal.servings}</Text>
+                    <Text>Carbs: </Text>
+                    <Text style={styles.mealText}>{meal.carbs} g</Text>
+                    <Text>Fat: </Text>
+                    <Text style={styles.mealText}>{meal.fat} g</Text>
+                    <Text>Protein: </Text>
+                    <Text style={styles.mealText}>{meal.protein} g</Text>
+                    <Text>Sodium: </Text>
+                    <Text style={styles.mealText}>{meal.sodium} mg</Text>
+                  </Collapsible>
+                </View>
               ))
             ) : (
                 <Text>No meals logged for today.</Text>
@@ -151,8 +151,8 @@ export default function DayPlanner({ route }) {
                       <Text>Time: </Text>
                       <Text style={styles.mealText}>
                         {new Date(workout.timestamp).toLocaleTimeString([], {
-                            hour: '2-digit',
-                            minute: '2-digit' 
+                          hour: '2-digit',
+                          minute: '2-digit' 
                         })}
                       </Text>
                     </Pressable>
