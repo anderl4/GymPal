@@ -46,7 +46,6 @@ export default function LogWorkouts() {
       console.error("Error logging workout: ", err);
     }
   };
-  
 
   const handlePress = () => {
     if (isEmptyField()) {

@@ -53,6 +53,7 @@ export default function LogMeals() {
     }
 };
 
+
   const handlePress = () => {
     if (isEmptyField()) {
       setAlertMessage('Please fill in all fields.');

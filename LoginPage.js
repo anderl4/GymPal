@@ -68,7 +68,6 @@ export default function LoginPage() {
           secureTextEntry
         />
       </View>
-      
 
       <View style={styles.createButtonContainer}>
         <Pressable onPress={handlePress}>
