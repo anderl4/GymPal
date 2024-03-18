@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { View, Text, StyleSheet, ScrollView, Pressable, TouchableOpacity } from 'react-native';
+import { View, Text, StyleSheet, ScrollView, Pressable } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import { getDoc, doc, getDocs, collection, query } from 'firebase/firestore/lite';
 import { auth, db } from './firebase';
@@ -107,7 +107,7 @@ export default function DayPlanner({ route }) {
             {meals.length > 0 ? (
               meals.map(meal => (
                   <View key={meal.id} style={styles.mealContainer}>
-                      <TouchableOpacity onPress={() => toggleExpand(meal.id)}>
+                      <Pressable onPress={() => toggleExpand(meal.id)}>
                         <Text>Description: </Text>
                         <Text style={styles.mealText}>{meal.mealDescription}</Text>
                         <Text>Calories: </Text>
@@ -119,7 +119,7 @@ export default function DayPlanner({ route }) {
                                 minute: '2-digit' 
                             })}
                         </Text>
-                      </TouchableOpacity>
+                      </Pressable>
 
                       <Collapsible collapsed={!expandedIds.includes(meal.id)}> 
                         <Text>Servings: </Text>
@@ -143,7 +143,7 @@ export default function DayPlanner({ route }) {
               {workouts.length > 0 ? (
                 workouts.map(workout => (
                   <View key={workout.id} style={styles.workoutContainer}>
-                    <TouchableOpacity onPress={() => toggleExpandWorkout(workout.id)}>
+                    <Pressable onPress={() => toggleExpandWorkout(workout.id)}>
                       <Text>Description: </Text>
                       <Text style={styles.workoutText}>{workout.workoutDescription}</Text>
                       <Text>Type: </Text>
@@ -155,7 +155,7 @@ export default function DayPlanner({ route }) {
                             minute: '2-digit' 
                         })}
                       </Text>
-                    </TouchableOpacity>
+                    </Pressable>
 
                     <Collapsible collapsed={!expandedWorkoutIds.includes(workout.id)}> 
                       <Text>Difficulty: </Text>
