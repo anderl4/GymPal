@@ -1,8 +1,6 @@
 
 # GymPal: Your Fitness Companion
 
-CompSci 125 Group 5
-
 ## Prerequisites
 
 Before you begin, ensure you have the following installed:
@@ -13,7 +11,7 @@ Before you begin, ensure you have the following installed:
 
 1. **Clone the Repository**:
    ```bash
-   git clone https://github.com/kevintr303/GymPal.git
+   git clone https://github.com/anderl4/GymPal.git
    cd GymPal
    ```
 
